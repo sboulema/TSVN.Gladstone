@@ -16,7 +16,7 @@ internal class TSVNExtension : Extension
         Metadata = new(
             id: "TSVN.64f925a0-498e-45e3-a544-30ecbd32620d",
             version: ExtensionAssemblyVersion,
-            publisherName: "Publisher name",
+            publisherName: "Samir Boulema",
             displayName: "TSVN"),
     };
 
@@ -30,5 +30,9 @@ internal class TSVNExtension : Extension
         serviceCollection.AddSingleton<FileHelper>();
 
         // TODO: How to subscribe to events?
+
+        // TODO: Add custom options dialog
+
+        // TODO: Add "Pending Changes" ToolWindow
     }
 }

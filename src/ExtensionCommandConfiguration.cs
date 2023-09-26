@@ -80,6 +80,8 @@ internal class ExtensionCommandConfiguration
             CommandPlacement.FromVsctParent(new Guid("{d309f791-903f-11d0-9efc-00a0c911004f}"), 534),
             // SolutionNode.SourceControlGroup
             CommandPlacement.FromVsctParent(new Guid("{d309f791-903f-11d0-9efc-00a0c911004f}"), 535),
+            // Solution Explorer - Folder View - Context Menu
+            CommandPlacement.FromVsctParent(new Guid("{cfb400f1-5c60-4f3c-856e-180d28def0b7}"), 2),
         },
         Children = new[]
         {

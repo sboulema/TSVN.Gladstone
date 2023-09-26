@@ -1,5 +1,6 @@
 ﻿using Microsoft.VisualStudio.Extensibility;
 using Microsoft.VisualStudio.Extensibility.Shell;
+using Microsoft.VisualStudio.ProjectSystem.Query;
 using Microsoft.Win32;
 using System.Diagnostics;
 
@@ -10,10 +11,13 @@ public class FileHelper
     private const string DEFAULT_PROC_PATH = @"C:\Program Files\TortoiseSVN\bin\TortoiseProc.exe";
 
     private readonly VisualStudioExtensibility _extensibility;
+    private readonly OptionsHelper _optionsHelper;
 
-    public FileHelper(VisualStudioExtensibility extensibility)
+    public FileHelper(VisualStudioExtensibility extensibility,
+        OptionsHelper optionsHelper)
     {
         _extensibility = extensibility;
+        _optionsHelper = optionsHelper;
     }
 
     public static string GetTortoiseSvnProc()
@@ -27,38 +31,36 @@ public class FileHelper
     public static string GetSvnExec()
         => GetTortoiseSvnProc().Replace("TortoiseProc.exe", "svn.exe");
 
+    // TODO: path parameter can be deleted?
     public async Task<string> GetRepositoryRoot(IClientContext clientContext,
         string path = "", CancellationToken cancellationToken = default)
     {
         try
         {
-            // TODO: Not yet implemented a way to handle Options
+            // TODO: TEST Not yet implemented a way to handle Options
             // https://github.com/microsoft/VSExtensibility/issues/262
 
             // Override any logic with the solution specific Root Folder setting
-            //var options = await OptionsHelper.GetOptions();
+            var options = await _optionsHelper.GetOptions(cancellationToken);
 
-            //if (!string.IsNullOrEmpty(options.RootFolder))
-            //{
-            //    return options.RootFolder;
-            //}
+            if (!string.IsNullOrEmpty(options.RootFolder))
+            {
+                return options.RootFolder;
+            }
 
             // Try to find the current working folder, either by open document or by open solution
             if (string.IsNullOrEmpty(path))
             {
                 var textView = await clientContext.GetActiveTextViewAsync(cancellationToken);
 
-                // TODO: How to get the current solution?
+                // TODO: TEST How to get the current solution?
+                var solutionDir = await GetSolutionDirectory(cancellationToken);
 
-                //var solution = await clientContext. VS.Solutions.GetCurrentSolutionAsync();
-
-                //if (!string.IsNullOrEmpty(solution?.FullPath))
-                //{
-                //    path = Path.GetDirectoryName(solution.FullPath);
-                //}
-                //else 
-                
-                if (!string.IsNullOrEmpty(textView?.FilePath))
+                if (!string.IsNullOrEmpty(solutionDir))
+                {
+                    path = solutionDir;
+                }
+                else if (!string.IsNullOrEmpty(textView?.FilePath))
                 {
                     path = Path.GetDirectoryName(textView?.FilePath) ?? string.Empty;
                 }
@@ -88,9 +90,6 @@ public class FileHelper
 
             var errors = string.Empty;
 
-            // TODO: temp way to return root folder, change once options have been implemented
-            var rootFolder = string.Empty;
-
             while (!proc.StandardError.EndOfStream)
             {
                 errors += await proc.StandardError.ReadLineAsync();
@@ -98,22 +97,20 @@ public class FileHelper
 
             while (!proc.StandardOutput.EndOfStream)
             {
-                rootFolder = await proc.StandardOutput.ReadLineAsync();
+                options.RootFolder = await proc.StandardOutput.ReadLineAsync() ?? string.Empty;
             }
 
-            // TODO: Not yet implemented a way to handle Options
+            // TODO: TEST Not yet implemented a way to handle Options
             // https://github.com/microsoft/VSExtensibility/issues/262
 
-            // await OptionsHelper.SaveOptions(options);
+            await _optionsHelper.SaveOptions(options, cancellationToken);
 
-            //if (string.IsNullOrEmpty(options.RootFolder))
-            if (string.IsNullOrEmpty(rootFolder))
+            if (string.IsNullOrEmpty(options.RootFolder))
             {
                 await ShowMissingSolutionDirMessage(cancellationToken);
             }
 
-            //return options.RootFolder;
-            return rootFolder ?? string.Empty;
+            return options.RootFolder;
         }
         catch (Exception e)
         {
@@ -123,6 +120,15 @@ public class FileHelper
         await ShowMissingSolutionDirMessage(cancellationToken);
 
         return string.Empty;
+    }
+
+    public async Task<string> GetSolutionDirectory(CancellationToken cancellationToken)
+    {
+        var result = await _extensibility
+            .Workspaces()
+            .QuerySolutionAsync(solution => solution.With(solution => solution.Directory), cancellationToken);
+
+        return result.FirstOrDefault()?.Directory ?? string.Empty;
     }
 
     /// <summary>

@@ -1,4 +1,5 @@
 {
+  "TSVN.Options.ApplicationName": "TSVN",
   "TSVN.ToolBar.DisplayName": "TSVN",
   "TSVN.MainMenu.DisplayName": "TSVN",
   "TSVN.FileMenu.DisplayName": "TSVN File",

@@ -1,6 +1,4 @@
-﻿
-
-using Microsoft.VisualStudio.Extensibility;
+﻿using Microsoft.VisualStudio.Extensibility;
 using Microsoft.VisualStudio.Extensibility.Shell;
 using System.Diagnostics;
 
@@ -10,13 +8,16 @@ public class CommandHelper
 {
     private readonly VisualStudioExtensibility _extensibility;
     private readonly FileHelper _fileHelper;
+    private readonly OptionsHelper _optionsHelper;
     private readonly string _tortoiseProcPath;
 
     public CommandHelper(VisualStudioExtensibility extensibility,
-        FileHelper fileHelper)
+        FileHelper fileHelper,
+        OptionsHelper optionsHelper)
     {
         _extensibility = extensibility;
         _fileHelper = fileHelper;
+        _optionsHelper = optionsHelper;
         _tortoiseProcPath = FileHelper.GetTortoiseSvnProc();
     }
 
@@ -41,12 +42,11 @@ public class CommandHelper
             return;
         }
 
-        // TODO: Not yet implemented a way to handle Options
-        // https://github.com/microsoft/VSExtensibility/issues/262
-        //var options = await OptionsHelper.GetOptions();
-        //var closeOnEnd = options.CloseOnEnd ? 1 : 0;
+        var options = await _optionsHelper.GetOptions(cancellationToken);
+        var closeOnEnd = options.CloseOnEnd ? 1 : 0;
 
-        var closeOnEnd = 1;
+        // TODO: TEST Not yet implemented a way to handle Options
+        // https://github.com/microsoft/VSExtensibility/issues/262
 
         await StartProcess(
             _tortoiseProcPath,

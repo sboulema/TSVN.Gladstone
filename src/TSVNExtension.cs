@@ -28,6 +28,7 @@ internal class TSVNExtension : Extension
         // You can configure dependency injection here by adding services to the serviceCollection.
         serviceCollection.AddSingleton<CommandHelper>();
         serviceCollection.AddSingleton<FileHelper>();
+        serviceCollection.AddSingleton<OptionsHelper>();
 
         // TODO: How to subscribe to events?
 

@@ -18,7 +18,8 @@ internal class UnlockCommand : Command
     /// <inheritdoc />
     public override CommandConfiguration CommandConfiguration => new("%TSVN.UnlockCommand.DisplayName%")
     {
-        Icon = new(ImageMoniker.KnownValues.Unlock, IconSettings.IconAndText)
+        Icon = new(ImageMoniker.KnownValues.Unlock, IconSettings.IconAndText),
+        Shortcuts = new[] { new CommandShortcutConfiguration(ModifierKey.ControlShift, Key.S, ModifierKey.LeftAlt, Key.K) }
     };
 
     /// <inheritdoc />

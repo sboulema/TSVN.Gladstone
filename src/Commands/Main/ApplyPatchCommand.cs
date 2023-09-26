@@ -22,7 +22,8 @@ internal class ApplyPatchCommand : Command
     /// <inheritdoc />
     public override CommandConfiguration CommandConfiguration => new("%TSVN.ApplyPatchCommand.DisplayName%")
     {
-        Icon = new(ImageMoniker.KnownValues.Stash, IconSettings.IconAndText)
+        Icon = new(ImageMoniker.KnownValues.Stash, IconSettings.IconAndText),
+        Shortcuts = new[] { new CommandShortcutConfiguration(ModifierKey.ControlShift, Key.S, ModifierKey.LeftAlt, Key.H) }
     };
 
     /// <inheritdoc />

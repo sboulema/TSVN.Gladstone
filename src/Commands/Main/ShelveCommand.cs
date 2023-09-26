@@ -18,7 +18,8 @@ internal class ShelveCommand : Command
     /// <inheritdoc />
     public override CommandConfiguration CommandConfiguration => new("%TSVN.ShelveCommand.DisplayName%")
     {
-        Icon = new(ImageMoniker.KnownValues.ShelvePendingChanges, IconSettings.IconAndText)
+        Icon = new(ImageMoniker.KnownValues.ShelvePendingChanges, IconSettings.IconAndText),
+        Shortcuts = new[] { new CommandShortcutConfiguration(ModifierKey.ControlShift, Key.S, ModifierKey.LeftAlt, Key.E) }
     };
 
     /// <inheritdoc />

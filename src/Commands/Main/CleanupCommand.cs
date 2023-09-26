@@ -18,7 +18,8 @@ internal class CleanupCommand : Command
     /// <inheritdoc />
     public override CommandConfiguration CommandConfiguration => new("%TSVN.CleanupCommand.DisplayName%")
     {
-        Icon = new(ImageMoniker.KnownValues.CleanData, IconSettings.IconAndText)
+        Icon = new(ImageMoniker.KnownValues.CleanData, IconSettings.IconAndText),
+        Shortcuts = new[] { new CommandShortcutConfiguration(ModifierKey.ControlShift, Key.S, ModifierKey.LeftAlt, Key.N) }
     };
 
     /// <inheritdoc />

@@ -18,7 +18,8 @@ internal class SwitchCommand : Command
     /// <inheritdoc />
     public override CommandConfiguration CommandConfiguration => new("%TSVN.SwitchCommand.DisplayName%")
     {
-        Icon = new(ImageMoniker.KnownValues.BranchCompare, IconSettings.IconAndText)
+        Icon = new(ImageMoniker.KnownValues.BranchCompare, IconSettings.IconAndText),
+        Shortcuts = new[] { new CommandShortcutConfiguration(ModifierKey.ControlShift, Key.S, ModifierKey.LeftAlt, Key.S) }
     };
 
     /// <inheritdoc />

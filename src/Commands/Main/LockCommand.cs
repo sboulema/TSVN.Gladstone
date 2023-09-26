@@ -18,7 +18,8 @@ internal class LockCommand : Command
     /// <inheritdoc />
     public override CommandConfiguration CommandConfiguration => new("%TSVN.LockCommand.DisplayName%")
     {
-        Icon = new(ImageMoniker.KnownValues.Lock, IconSettings.IconAndText)
+        Icon = new(ImageMoniker.KnownValues.Lock, IconSettings.IconAndText),
+        Shortcuts = new[] { new CommandShortcutConfiguration(ModifierKey.ControlShift, Key.S, ModifierKey.LeftAlt, Key.O) }
     };
 
     /// <inheritdoc />

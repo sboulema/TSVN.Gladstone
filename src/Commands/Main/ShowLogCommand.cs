@@ -18,7 +18,8 @@ internal class ShowLogCommand : Command
     /// <inheritdoc />
     public override CommandConfiguration CommandConfiguration => new("%TSVN.ShowLogCommand.DisplayName%")
     {
-        Icon = new(ImageMoniker.KnownValues.Log, IconSettings.IconAndText)
+        Icon = new(ImageMoniker.KnownValues.Log, IconSettings.IconAndText),
+        Shortcuts = new[] { new CommandShortcutConfiguration(ModifierKey.ControlShift, Key.S, ModifierKey.LeftAlt, Key.L) }
     };
 
     /// <inheritdoc />

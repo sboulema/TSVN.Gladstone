@@ -18,7 +18,8 @@ internal class CommitCommand : Command
     /// <inheritdoc />
     public override CommandConfiguration CommandConfiguration => new("%TSVN.CommitCommand.DisplayName%")
     {
-        Icon = new(ImageMoniker.KnownValues.Commit, IconSettings.IconAndText)
+        Icon = new(ImageMoniker.KnownValues.Commit, IconSettings.IconAndText),
+        Shortcuts = new[] { new CommandShortcutConfiguration(ModifierKey.ControlShift, Key.S, ModifierKey.LeftAlt, Key.C)}
     };
 
     /// <inheritdoc />

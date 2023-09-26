@@ -18,7 +18,8 @@ internal class ShowChangesCommand : Command
     /// <inheritdoc />
     public override CommandConfiguration CommandConfiguration => new("%TSVN.ShowChangesCommand.DisplayName%")
     {
-        Icon = new(ImageMoniker.KnownValues.History, IconSettings.IconAndText)
+        Icon = new(ImageMoniker.KnownValues.History, IconSettings.IconAndText),
+        Shortcuts = new[] { new CommandShortcutConfiguration(ModifierKey.ControlShift, Key.S, ModifierKey.LeftAlt, Key.W) }
     };
 
     /// <inheritdoc />

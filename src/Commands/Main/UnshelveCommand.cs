@@ -18,7 +18,8 @@ internal class UnshelveCommand : Command
     /// <inheritdoc />
     public override CommandConfiguration CommandConfiguration => new("%TSVN.UnshelveCommand.DisplayName%")
     {
-        Icon = new(ImageMoniker.KnownValues.UnshelvePendingChanges, IconSettings.IconAndText)
+        Icon = new(ImageMoniker.KnownValues.UnshelvePendingChanges, IconSettings.IconAndText),
+        Shortcuts = new[] { new CommandShortcutConfiguration(ModifierKey.ControlShift, Key.S, ModifierKey.LeftAlt, Key.P) }
     };
 
     /// <inheritdoc />

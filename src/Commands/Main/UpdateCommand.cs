@@ -18,7 +18,8 @@ internal class UpdateCommand : Command
     /// <inheritdoc />
     public override CommandConfiguration CommandConfiguration => new("%TSVN.UpdateCommand.DisplayName%")
     {
-        Icon = new(ImageMoniker.KnownValues.Pull, IconSettings.IconAndText)
+        Icon = new(ImageMoniker.KnownValues.Pull, IconSettings.IconAndText),
+        Shortcuts = new[] { new CommandShortcutConfiguration(ModifierKey.ControlShift, Key.S, ModifierKey.LeftAlt, Key.U) }
     };
 
     /// <inheritdoc />

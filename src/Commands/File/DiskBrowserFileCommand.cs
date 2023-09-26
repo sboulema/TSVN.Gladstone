@@ -5,20 +5,21 @@ using TSVN.Helpers;
 namespace TSVN.Commands;
 
 [VisualStudioContribution]
-internal class CleanupCommand : Command
+internal class DiskBrowserFileCommand : Command
 {
     private readonly CommandHelper _commandHelper;
 
-    public CleanupCommand(VisualStudioExtensibility extensibility, CommandHelper commandHelper)
+    public DiskBrowserFileCommand(VisualStudioExtensibility extensibility,
+        CommandHelper commandHelper)
         : base(extensibility)
     {
         _commandHelper = commandHelper;
     }
 
     /// <inheritdoc />
-    public override CommandConfiguration CommandConfiguration => new("%TSVN.CleanupCommand.DisplayName%")
+    public override CommandConfiguration CommandConfiguration => new("%TSVN.DiskBrowserFileCommand.DisplayName%")
     {
-        Icon = new(ImageMoniker.KnownValues.CleanData, IconSettings.IconAndText)
+        Icon = new(ImageMoniker.KnownValues.Computer, IconSettings.IconAndText)
     };
 
     /// <inheritdoc />
@@ -30,6 +31,13 @@ internal class CleanupCommand : Command
     /// <inheritdoc />
     public override async Task ExecuteCommandAsync(IClientContext clientContext, CancellationToken cancellationToken)
     {
-        await _commandHelper.RunTortoiseSvnCommand(clientContext, "cleanup", cancellationToken: cancellationToken);
+        var filePath = await FileHelper.GetPath(clientContext, cancellationToken);
+
+        if (string.IsNullOrEmpty(filePath))
+        {
+            return;
+        }
+
+        await _commandHelper.StartProcess("explorer.exe", filePath, cancellationToken);
     }
 }

@@ -5,20 +5,20 @@ using TSVN.Helpers;
 namespace TSVN.Commands;
 
 [VisualStudioContribution]
-internal class CleanupCommand : Command
+internal class UpdateFileCommand : Command
 {
     private readonly CommandHelper _commandHelper;
 
-    public CleanupCommand(VisualStudioExtensibility extensibility, CommandHelper commandHelper)
+    public UpdateFileCommand(VisualStudioExtensibility extensibility, CommandHelper commandHelper)
         : base(extensibility)
     {
         _commandHelper = commandHelper;
     }
 
     /// <inheritdoc />
-    public override CommandConfiguration CommandConfiguration => new("%TSVN.CleanupCommand.DisplayName%")
+    public override CommandConfiguration CommandConfiguration => new("%TSVN.UpdateFileCommand.DisplayName%")
     {
-        Icon = new(ImageMoniker.KnownValues.CleanData, IconSettings.IconAndText)
+        Icon = new(ImageMoniker.KnownValues.Pull, IconSettings.IconAndText)
     };
 
     /// <inheritdoc />
@@ -30,6 +30,7 @@ internal class CleanupCommand : Command
     /// <inheritdoc />
     public override async Task ExecuteCommandAsync(IClientContext clientContext, CancellationToken cancellationToken)
     {
-        await _commandHelper.RunTortoiseSvnCommand(clientContext, "cleanup", cancellationToken: cancellationToken);
+        await _commandHelper.RunTortoiseSvnCommand(clientContext, "update",
+            isFileCommand: true, cancellationToken: cancellationToken);
     }
 }

@@ -4,32 +4,37 @@ using TSVN.Helpers;
 
 namespace TSVN.Commands;
 
+/// <summary>
+/// CommitCommand handler.
+/// </summary>
 [VisualStudioContribution]
-internal class CleanupCommand : Command
+internal class RepoBrowserFileCommand : Command
 {
     private readonly CommandHelper _commandHelper;
 
-    public CleanupCommand(VisualStudioExtensibility extensibility, CommandHelper commandHelper)
+    public RepoBrowserFileCommand(VisualStudioExtensibility extensibility, CommandHelper commandHelper)
         : base(extensibility)
     {
         _commandHelper = commandHelper;
     }
 
     /// <inheritdoc />
-    public override CommandConfiguration CommandConfiguration => new("%TSVN.CleanupCommand.DisplayName%")
+    public override CommandConfiguration CommandConfiguration => new("%TSVN.RepoBrowserFileCommand.DisplayName%")
     {
-        Icon = new(ImageMoniker.KnownValues.CleanData, IconSettings.IconAndText)
+        Icon = new(ImageMoniker.KnownValues.Repository, IconSettings.IconAndText)
     };
 
     /// <inheritdoc />
     public override Task InitializeAsync(CancellationToken cancellationToken)
     {
+        // Use InitializeAsync for any one-time setup or initialization.
         return base.InitializeAsync(cancellationToken);
     }
 
     /// <inheritdoc />
     public override async Task ExecuteCommandAsync(IClientContext clientContext, CancellationToken cancellationToken)
     {
-        await _commandHelper.RunTortoiseSvnCommand(clientContext, "cleanup", cancellationToken: cancellationToken);
+        await _commandHelper.RunTortoiseSvnCommand(clientContext, "repobrowser",
+            isFileCommand: true, cancellationToken: cancellationToken);
     }
 }

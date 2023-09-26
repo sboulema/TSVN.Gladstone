@@ -4,9 +4,6 @@ using TSVN.Helpers;
 
 namespace TSVN.Commands;
 
-/// <summary>
-/// CommitCommand handler.
-/// </summary>
 [VisualStudioContribution]
 internal class CommitCommand : Command
 {
@@ -21,15 +18,12 @@ internal class CommitCommand : Command
     /// <inheritdoc />
     public override CommandConfiguration CommandConfiguration => new("%TSVN.CommitCommand.DisplayName%")
     {
-        // Use this object initializer to set optional parameters for the command. The required parameter,
-        // displayName, is set above. DisplayName is localized and references an entry in .vsextension\string-resources.json.
         Icon = new(ImageMoniker.KnownValues.Commit, IconSettings.IconAndText)
     };
 
     /// <inheritdoc />
     public override Task InitializeAsync(CancellationToken cancellationToken)
     {
-        // Use InitializeAsync for any one-time setup or initialization.
         return base.InitializeAsync(cancellationToken);
     }
 

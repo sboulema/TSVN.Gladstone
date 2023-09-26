@@ -11,8 +11,28 @@ internal class ExtensionCommandConfiguration
     {
         Children = new[]
         {
+            ToolbarChild.Command<ShowChangesCommand>(),
+            ToolbarChild.Command<UpdateCommand>(),
             ToolbarChild.Command<CommitCommand>(),
-            // TODO: Add toolbar children
+            ToolbarChild.Separator,
+            ToolbarChild.Command<ShowLogCommand>(),
+            ToolbarChild.Command<DiskBrowserCommand>(),
+            ToolbarChild.Command<RepoBrowserCommand>(),
+            ToolbarChild.Separator,
+            ToolbarChild.Command<CreatePatchCommand>(),
+            ToolbarChild.Command<ApplyPatchCommand>(),
+            ToolbarChild.Command<ShelveCommand>(),
+            ToolbarChild.Command<UnshelveCommand>(),
+            ToolbarChild.Separator,
+            ToolbarChild.Command<BranchCommand>(),
+            ToolbarChild.Command<SwitchCommand>(),
+            ToolbarChild.Command<MergeCommand>(),
+            ToolbarChild.Separator,
+            ToolbarChild.Command<RevertCommand>(),
+            ToolbarChild.Command<UpdateToRevisionCommand>(),
+            ToolbarChild.Command<CleanupCommand>(),
+            ToolbarChild.Command<LockCommand>(),
+            ToolbarChild.Command<UnlockCommand>(),
         },
     };
 
@@ -56,25 +76,25 @@ internal class ExtensionCommandConfiguration
         Children = new[]
         {
             MenuChild.Command<ShowLogFileCommand>(),
-            // Disk browser
-            // Repo browser
+            MenuChild.Command<DiskBrowserFileCommand>(),
+            MenuChild.Command<RepoBrowserFileCommand>(),
             MenuChild.Separator,
             MenuChild.Command<BlameFileCommand>(),
             MenuChild.Separator,
             MenuChild.Command<MergeFileCommand>(),
-            // Update to revision
-            // Properties
+            MenuChild.Command<UpdateToRevisionFileCommand>(),
+            MenuChild.Command<PropertiesFileCommand>(),
             MenuChild.Separator,
-            // Update
-            // Commit
-            // Revert
+            MenuChild.Command<UpdateFileCommand>(),
+            MenuChild.Command<CommitFileCommand>(),
+            MenuChild.Command<RevertFileCommand>(),
             MenuChild.Command<AddFileCommand>(),
-            // Show differences
-            // Diff with previous version
-            // Delete
-            // Get lock
-            // Release lock
-            // Rename
+            MenuChild.Command<DifferencesFileCommand>(),
+            MenuChild.Command<DiffPreviousFileCommand>(),
+            MenuChild.Command<DeleteFileCommand>(),
+            MenuChild.Command<LockFileCommand>(),
+            MenuChild.Command<UnlockFileCommand>(),
+            MenuChild.Command<RenameFileCommand>(),
         },
     };
 
@@ -88,4 +108,8 @@ internal class ExtensionCommandConfiguration
     // https://github.com/microsoft/VSExtensibility/issues/260
 
     // TODO: Command keyboard shortcuts
+
+    // TODO: Are toolbar commands icon only?
+
+    // TODO: Fill string-resource.json with command labels
 }

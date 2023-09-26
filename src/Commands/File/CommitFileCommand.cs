@@ -5,20 +5,20 @@ using TSVN.Helpers;
 namespace TSVN.Commands;
 
 [VisualStudioContribution]
-internal class CleanupCommand : Command
+internal class CommitFileCommand : Command
 {
     private readonly CommandHelper _commandHelper;
 
-    public CleanupCommand(VisualStudioExtensibility extensibility, CommandHelper commandHelper)
+    public CommitFileCommand(VisualStudioExtensibility extensibility, CommandHelper commandHelper)
         : base(extensibility)
     {
         _commandHelper = commandHelper;
     }
 
     /// <inheritdoc />
-    public override CommandConfiguration CommandConfiguration => new("%TSVN.CleanupCommand.DisplayName%")
+    public override CommandConfiguration CommandConfiguration => new("%TSVN.CommitFileCommand.DisplayName%")
     {
-        Icon = new(ImageMoniker.KnownValues.CleanData, IconSettings.IconAndText)
+        Icon = new(ImageMoniker.KnownValues.Commit, IconSettings.IconAndText)
     };
 
     /// <inheritdoc />
@@ -30,6 +30,7 @@ internal class CleanupCommand : Command
     /// <inheritdoc />
     public override async Task ExecuteCommandAsync(IClientContext clientContext, CancellationToken cancellationToken)
     {
-        await _commandHelper.RunTortoiseSvnCommand(clientContext, "cleanup", cancellationToken: cancellationToken);
+        await _commandHelper.RunTortoiseSvnCommand(clientContext, "commit",
+            isFileCommand: true, cancellationToken: cancellationToken);
     }
 }

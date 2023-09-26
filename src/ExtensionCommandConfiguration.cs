@@ -11,28 +11,28 @@ internal class ExtensionCommandConfiguration
     {
         Children = new[]
         {
-            ToolbarChild.Command<ShowChangesCommand>(),
-            ToolbarChild.Command<UpdateCommand>(),
-            ToolbarChild.Command<CommitCommand>(),
+            ToolbarChild.Command<ShowChangesToolbarCommand>(),
+            ToolbarChild.Command<UpdateToolbarCommand>(),
+            ToolbarChild.Command<CommitToolbarCommand>(),
             ToolbarChild.Separator,
-            ToolbarChild.Command<ShowLogCommand>(),
-            ToolbarChild.Command<DiskBrowserCommand>(),
-            ToolbarChild.Command<RepoBrowserCommand>(),
+            ToolbarChild.Command<ShowLogToolbarCommand>(),
+            ToolbarChild.Command<DiskBrowserToolbarCommand>(),
+            ToolbarChild.Command<RepoBrowserToolbarCommand>(),
             ToolbarChild.Separator,
-            ToolbarChild.Command<CreatePatchCommand>(),
-            ToolbarChild.Command<ApplyPatchCommand>(),
-            ToolbarChild.Command<ShelveCommand>(),
-            ToolbarChild.Command<UnshelveCommand>(),
+            ToolbarChild.Command<CreatePatchToolbarCommand>(),
+            ToolbarChild.Command<ApplyPatchToolbarCommand>(),
+            ToolbarChild.Command<ShelveToolbarCommand>(),
+            ToolbarChild.Command<UnshelveToolbarCommand>(),
             ToolbarChild.Separator,
-            ToolbarChild.Command<BranchCommand>(),
-            ToolbarChild.Command<SwitchCommand>(),
-            ToolbarChild.Command<MergeCommand>(),
+            ToolbarChild.Command<BranchToolbarCommand>(),
+            ToolbarChild.Command<SwitchToolbarCommand>(),
+            ToolbarChild.Command<MergeToolbarCommand>(),
             ToolbarChild.Separator,
-            ToolbarChild.Command<RevertCommand>(),
-            ToolbarChild.Command<UpdateToRevisionCommand>(),
-            ToolbarChild.Command<CleanupCommand>(),
-            ToolbarChild.Command<LockCommand>(),
-            ToolbarChild.Command<UnlockCommand>(),
+            ToolbarChild.Command<RevertToolbarCommand>(),
+            ToolbarChild.Command<UpdateToRevisionToolbarCommand>(),
+            ToolbarChild.Command<CleanupToolbarCommand>(),
+            ToolbarChild.Command<LockToolbarCommand>(),
+            ToolbarChild.Command<UnlockToolbarCommand>(),
         },
     };
 
@@ -72,7 +72,15 @@ internal class ExtensionCommandConfiguration
     [VisualStudioContribution]
     public static MenuConfiguration FileMenu => new("%TSVN.FileMenu.DisplayName%")
     {
-        Placements = new[] { CommandPlacement.KnownPlacements.ExtensionsMenu },
+        Placements = new[]
+        {
+            // Node.SourceControlGroup
+            CommandPlacement.FromVsctParent(new Guid("{d309f791-903f-11d0-9efc-00a0c911004f}"), 527),
+            // ProjectNode.SourceControlGroup
+            CommandPlacement.FromVsctParent(new Guid("{d309f791-903f-11d0-9efc-00a0c911004f}"), 534),
+            // SolutionNode.SourceControlGroup
+            CommandPlacement.FromVsctParent(new Guid("{d309f791-903f-11d0-9efc-00a0c911004f}"), 535),
+        },
         Children = new[]
         {
             MenuChild.Command<ShowLogFileCommand>(),
@@ -101,15 +109,8 @@ internal class ExtensionCommandConfiguration
     // TODO: Place command in the Editor window
     // https://github.com/microsoft/VSExtensibility/issues/130
 
-    // TODO: How to make sub menus?
-    // https://github.com/microsoft/VSExtensibility/issues/65
-
     // TODO: Place menu in the Solution Explorer
     // https://github.com/microsoft/VSExtensibility/issues/260
 
-    // TODO: Command keyboard shortcuts
-
-    // TODO: Are toolbar commands icon only?
-
-    // TODO: Fill string-resource.json with command labels
+    // TODO: How to add menu keyboard letters 
 }

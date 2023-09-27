@@ -65,6 +65,7 @@ internal class ExtensionCommandConfiguration
             MenuChild.Command<LockCommand>(),
             MenuChild.Command<UnlockCommand>(),
             MenuChild.Separator,
+            MenuChild.Menu(WindowMenu),
             MenuChild.Menu(FileMenu)
         },
     };
@@ -108,11 +109,22 @@ internal class ExtensionCommandConfiguration
         },
     };
 
+    [VisualStudioContribution]
+    public static MenuConfiguration WindowMenu => new("%TSVN.WindowMenu.DisplayName%")
+    {
+        Children = new[]
+        {
+            MenuChild.Command<OptionsDialogCommand>()
+        },
+    };
+
     // TODO: Place command in the Editor window
     // https://github.com/microsoft/VSExtensibility/issues/130
 
     // TODO: Place menu in the Solution Explorer
     // https://github.com/microsoft/VSExtensibility/issues/260
 
-    // TODO: How to add menu keyboard letters 
+    // TODO: How to add menu keyboard letters
+
+    // TODO: How to use string-resources.json in XAML files
 }

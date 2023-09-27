@@ -1,27 +1,23 @@
-﻿using Newtonsoft.Json;
+﻿using Microsoft.VisualStudio.Extensibility;
+using Newtonsoft.Json;
 using TSVN.Models;
 
 namespace TSVN.Helpers;
 
-public class OptionsHelper
+public static class OptionsHelper
 {
-    private readonly FileHelper _fileHelper;
-
-    public OptionsHelper(FileHelper fileHelper)
+    public static async Task<Options> GetOptions(
+        VisualStudioExtensibility extensibility,
+        CancellationToken cancellationToken)
     {
-        _fileHelper = fileHelper;
-    }
-
-    public async Task<Options> GetOptions(CancellationToken cancellationToken)
-    {
-        var solutionDirectory = await _fileHelper.GetSolutionDirectory(cancellationToken);
+        var solutionDirectory = await FileHelper.GetSolutionDirectory(extensibility, cancellationToken);
 
         if (!File.Exists(solutionDirectory))
         {
             return new();
         }
 
-        var settingFilePath = Path.Combine(solutionDirectory, ".vs", "%TSVN.Options.ApplicationName%.json");
+        var settingFilePath = Path.Combine(solutionDirectory, ".vs", "TSVN.json");
 
         if (!File.Exists(settingFilePath))
         {
@@ -32,16 +28,18 @@ public class OptionsHelper
         return JsonConvert.DeserializeObject<Options>(json) ?? new();
     }
 
-    public async Task SaveOptions(Options options, CancellationToken cancellationToken)
+    public static async Task SaveOptions(Options options,
+        VisualStudioExtensibility extensibility,
+        CancellationToken cancellationToken)
     {
-        var solutionDirectory = await _fileHelper.GetSolutionDirectory(cancellationToken);
+        var solutionDirectory = await FileHelper.GetSolutionDirectory(extensibility, cancellationToken);
 
         if (!File.Exists(solutionDirectory))
         {
             return;
         }
 
-        var optionsFilePath = Path.Combine(solutionDirectory, ".vs", "%TSVN.Options.ApplicationName%.json");
+        var optionsFilePath = Path.Combine(solutionDirectory, ".vs", "TSVN.json");
 
         var json = JsonConvert.SerializeObject(options);
 

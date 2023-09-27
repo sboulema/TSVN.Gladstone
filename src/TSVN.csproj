@@ -24,6 +24,11 @@
 	</ItemGroup>
 
 	<ItemGroup>
+		<EmbeddedResource Include="Dialogs\OptionsDialogControl.xaml" />
+		<Page Remove="Dialogs\OptionsDialogControl.xaml" />
+	</ItemGroup>
+
+	<ItemGroup>
 	  <None Include="..\.editorconfig" Link=".editorconfig" />
 	</ItemGroup>
 

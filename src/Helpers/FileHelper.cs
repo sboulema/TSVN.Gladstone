@@ -11,13 +11,10 @@ public class FileHelper
     private const string DEFAULT_PROC_PATH = @"C:\Program Files\TortoiseSVN\bin\TortoiseProc.exe";
 
     private readonly VisualStudioExtensibility _extensibility;
-    private readonly OptionsHelper _optionsHelper;
 
-    public FileHelper(VisualStudioExtensibility extensibility,
-        OptionsHelper optionsHelper)
+    public FileHelper(VisualStudioExtensibility extensibility)
     {
         _extensibility = extensibility;
-        _optionsHelper = optionsHelper;
     }
 
     public static string GetTortoiseSvnProc()
@@ -41,7 +38,7 @@ public class FileHelper
             // https://github.com/microsoft/VSExtensibility/issues/262
 
             // Override any logic with the solution specific Root Folder setting
-            var options = await _optionsHelper.GetOptions(cancellationToken);
+            var options = await OptionsHelper.GetOptions(_extensibility, cancellationToken);
 
             if (!string.IsNullOrEmpty(options.RootFolder))
             {
@@ -54,7 +51,7 @@ public class FileHelper
                 var textView = await clientContext.GetActiveTextViewAsync(cancellationToken);
 
                 // TODO: TEST How to get the current solution?
-                var solutionDir = await GetSolutionDirectory(cancellationToken);
+                var solutionDir = await GetSolutionDirectory(_extensibility, cancellationToken);
 
                 if (!string.IsNullOrEmpty(solutionDir))
                 {
@@ -103,7 +100,7 @@ public class FileHelper
             // TODO: TEST Not yet implemented a way to handle Options
             // https://github.com/microsoft/VSExtensibility/issues/262
 
-            await _optionsHelper.SaveOptions(options, cancellationToken);
+            await OptionsHelper.SaveOptions(options, _extensibility, cancellationToken);
 
             if (string.IsNullOrEmpty(options.RootFolder))
             {
@@ -122,9 +119,10 @@ public class FileHelper
         return string.Empty;
     }
 
-    public async Task<string> GetSolutionDirectory(CancellationToken cancellationToken)
+    public static async Task<string> GetSolutionDirectory(VisualStudioExtensibility extensibility,
+        CancellationToken cancellationToken)
     {
-        var result = await _extensibility
+        var result = await extensibility
             .Workspaces()
             .QuerySolutionAsync(solution => solution.With(solution => solution.Directory), cancellationToken);
 

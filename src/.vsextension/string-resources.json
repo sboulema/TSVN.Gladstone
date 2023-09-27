@@ -2,7 +2,8 @@
   "TSVN.Options.ApplicationName": "TSVN",
   "TSVN.ToolBar.DisplayName": "TSVN",
   "TSVN.MainMenu.DisplayName": "TSVN",
-  "TSVN.FileMenu.DisplayName": "TSVN File",
+  "TSVN.FileMenu.DisplayName": "File",
+  "TSVN.WindowMenu.DisplayName": "Windows",
   "TSVN.AddFileCommand.DisplayName": "Add",
   "TSVN.BlameFileCommand.DisplayName": "Blame...",
   "TSVN.CommitFileCommand.DisplayName": "Commit...",
@@ -55,5 +56,8 @@
   "TSVN.UnlockToolbarCommand.DisplayName": "Release lock...",
   "TSVN.UnshelveToolbarCommand.DisplayName": "Unshelve...",
   "TSVN.UpdateToolbarCommand.DisplayName": "Update",
-  "TSVN.UpdateToRevisionToolbarCommand.DisplayName": "Update To Revision..."
+  "TSVN.UpdateToRevisionToolbarCommand.DisplayName": "Update To Revision...",
+  "TSVN.OptionsDialogCommand.DisplayName": "Options...",
+  "TSVN.OptionsDialog.Header": "Solution-specific Options",
+  "TSVN.OptionsDialog.LabelWorkingCopyRootPath": "Working copy root path"
 }

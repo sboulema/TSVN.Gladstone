@@ -8,16 +8,13 @@ public class CommandHelper
 {
     private readonly VisualStudioExtensibility _extensibility;
     private readonly FileHelper _fileHelper;
-    private readonly OptionsHelper _optionsHelper;
     private readonly string _tortoiseProcPath;
 
     public CommandHelper(VisualStudioExtensibility extensibility,
-        FileHelper fileHelper,
-        OptionsHelper optionsHelper)
+        FileHelper fileHelper)
     {
         _extensibility = extensibility;
         _fileHelper = fileHelper;
-        _optionsHelper = optionsHelper;
         _tortoiseProcPath = FileHelper.GetTortoiseSvnProc();
     }
 
@@ -42,7 +39,7 @@ public class CommandHelper
             return;
         }
 
-        var options = await _optionsHelper.GetOptions(cancellationToken);
+        var options = await OptionsHelper.GetOptions(_extensibility, cancellationToken);
         var closeOnEnd = options.CloseOnEnd ? 1 : 0;
 
         // TODO: TEST Not yet implemented a way to handle Options

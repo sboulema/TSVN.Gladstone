@@ -28,9 +28,8 @@ public class FileHelper
     public static string GetSvnExec()
         => GetTortoiseSvnProc().Replace("TortoiseProc.exe", "svn.exe");
 
-    // TODO: path parameter can be deleted?
     public async Task<string> GetRepositoryRoot(IClientContext clientContext,
-        string path = "", CancellationToken cancellationToken = default)
+        CancellationToken cancellationToken = default)
     {
         try
         {
@@ -45,22 +44,21 @@ public class FileHelper
                 return options.RootFolder;
             }
 
+            var path = string.Empty;
+
             // Try to find the current working folder, either by open document or by open solution
-            if (string.IsNullOrEmpty(path))
+            var textView = await clientContext.GetActiveTextViewAsync(cancellationToken);
+
+            // TODO: TEST How to get the current solution?
+            var solutionDir = await GetSolutionDirectory(_extensibility, cancellationToken);
+
+            if (!string.IsNullOrEmpty(solutionDir))
             {
-                var textView = await clientContext.GetActiveTextViewAsync(cancellationToken);
-
-                // TODO: TEST How to get the current solution?
-                var solutionDir = await GetSolutionDirectory(_extensibility, cancellationToken);
-
-                if (!string.IsNullOrEmpty(solutionDir))
-                {
-                    path = solutionDir;
-                }
-                else if (!string.IsNullOrEmpty(textView?.FilePath))
-                {
-                    path = Path.GetDirectoryName(textView?.FilePath) ?? string.Empty;
-                }
+                path = solutionDir;
+            }
+            else if (!string.IsNullOrEmpty(textView?.FilePath))
+            {
+                path = Path.GetDirectoryName(textView?.FilePath) ?? string.Empty;
             }
 
             // No solution or file open, we have no way of determining repository root.

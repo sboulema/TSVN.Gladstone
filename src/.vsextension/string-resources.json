@@ -2,7 +2,7 @@
   "TSVN.Options.ApplicationName": "TSVN",
   "TSVN.ToolBar.DisplayName": "TSVN",
   "TSVN.MainMenu.DisplayName": "&TSVN",
-  "TSVN.FileMenu.DisplayName": "&File",
+  "TSVN.FileMenu.DisplayName": "&TSVN File",
   "TSVN.WindowMenu.DisplayName": "&Windows",
   "TSVN.AddFileCommand.DisplayName": "&Add",
   "TSVN.BlameFileCommand.DisplayName": "&Blame...",

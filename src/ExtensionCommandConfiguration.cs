@@ -75,14 +75,12 @@ internal class ExtensionCommandConfiguration
     {
         Placements = new[]
         {
-            // Node.SourceControlGroup
-            CommandPlacement.FromVsctParent(new Guid("{d309f791-903f-11d0-9efc-00a0c911004f}"), 527),
-            // ProjectNode.SourceControlGroup
-            CommandPlacement.FromVsctParent(new Guid("{d309f791-903f-11d0-9efc-00a0c911004f}"), 534),
-            // SolutionNode.SourceControlGroup
-            CommandPlacement.FromVsctParent(new Guid("{d309f791-903f-11d0-9efc-00a0c911004f}"), 535),
-            // Solution Explorer - Folder View - Context Menu
-            CommandPlacement.FromVsctParent(new Guid("{cfb400f1-5c60-4f3c-856e-180d28def0b7}"), 2),
+            // ItemNode.OpenGroup
+            CommandPlacement.FromVsctParent(new Guid("{d309f791-903f-11d0-9efc-00a0c911004f}"), 521),
+            // ProjectNode.BuildGroup
+            CommandPlacement.FromVsctParent(new Guid("{d309f791-903f-11d0-9efc-00a0c911004f}"), 518),
+            // SolutionNode.BuildGroup
+            CommandPlacement.FromVsctParent(new Guid("{d309f791-903f-11d0-9efc-00a0c911004f}"), 537),
         },
         Children = new[]
         {
@@ -115,14 +113,12 @@ internal class ExtensionCommandConfiguration
         Children = new[]
         {
             MenuChild.Command<OptionsDialogCommand>()
-        },
+        }
     };
 
     // TODO: Place command in the Editor window
     // https://github.com/microsoft/VSExtensibility/issues/130
 
-    // TODO: Place menu in the Solution Explorer
-    // https://github.com/microsoft/VSExtensibility/issues/260
-
     // TODO: How to use string-resources.json in XAML files
+    // https://github.com/microsoft/VSExtensibility/issues/268
 }

@@ -46,7 +46,6 @@ public class FileHelper
             // Try to find the current working folder, either by open document or by open solution
             var textView = await clientContext.GetActiveTextViewAsync(cancellationToken);
 
-            // TODO: TEST How to get the current solution?
             var solutionDir = await GetSolutionDirectory(_extensibility, cancellationToken);
 
             if (!string.IsNullOrEmpty(solutionDir))
@@ -139,34 +138,6 @@ public class FileHelper
         var textView = await clientContext.GetActiveTextViewAsync(cancellationToken);
 
         return textView?.FilePath ?? string.Empty;
-
-        // TODO: How to get the current window and check if it is the Solution Explorer
-
-        //var windowFrame = await VS.Windows.GetCurrentWindowAsync();
-        //var solutionExplorerIsActive = windowFrame.Guid == new Guid(WindowGuids.SolutionExplorer);
-
-        //// Context menu in the Solution Explorer
-        //if (solutionExplorerIsActive)
-        //{
-        //    var selectedItem = await VS.Solutions.GetActiveItemAsync();
-
-        //    if (selectedItem != null)
-        //    {
-        //        if (selectedItem.Type == SolutionItemType.Project ||
-        //            selectedItem.Type == SolutionItemType.Solution)
-        //        {
-        //            return Path.GetDirectoryName(selectedItem.FullPath);
-        //        }
-        //        else if (selectedItem.Type == SolutionItemType.PhysicalFile)
-        //        {
-        //            return selectedItem.FullPath;
-        //        }
-        //    }
-        //}
-
-        //// Context menu in the Code Editor
-        //var documentView = await VS.Documents.GetActiveDocumentViewAsync();
-        //return documentView?.Document?.FilePath;
     }
 
     private async Task<bool> ShowMissingSolutionDirMessage(CancellationToken cancellationToken)

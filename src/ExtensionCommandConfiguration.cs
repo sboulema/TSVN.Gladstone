@@ -124,7 +124,5 @@ internal class ExtensionCommandConfiguration
     // TODO: Place menu in the Solution Explorer
     // https://github.com/microsoft/VSExtensibility/issues/260
 
-    // TODO: How to add menu keyboard letters
-
     // TODO: How to use string-resources.json in XAML files
 }

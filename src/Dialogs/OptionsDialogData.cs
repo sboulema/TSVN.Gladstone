@@ -1,4 +1,5 @@
 ﻿using Microsoft.VisualStudio.Extensibility.UI;
+using Microsoft.Win32;
 using System.Runtime.Serialization;
 using TSVN.Models;
 
@@ -20,6 +21,8 @@ public class OptionsDialogData : NotifyPropertyChangedObject
         OnItemRenamedRenameInSVN = options.OnItemRenamedRenameInSVN;
         OnItemRemovedRemoveFromSVN = options.OnItemRemovedRemoveFromSVN;
         CloseOnEnd = options.CloseOnEnd;
+
+        BrowseCommand = new AsyncCommand(Browse);
     }
 
     [DataMember]
@@ -55,5 +58,31 @@ public class OptionsDialogData : NotifyPropertyChangedObject
     {
         get => _closeOnEnd;
         set => SetProperty(ref _closeOnEnd, value);
+    }
+
+    [DataMember]
+    public IAsyncCommand BrowseCommand
+    {
+        get;
+    }
+
+    // TODO: While showing a dialog you can not show another dialog?
+    // TODO: Which dialog to use SaveFileDialog or FolderBrowserDialog: https://stackoverflow.com/questions/76196026/using-folder-browser-in-wpf-net-6-0
+    private async Task Browse(object? commandParameter, CancellationToken cancellationToken)
+    {
+        var dialog = new SaveFileDialog()
+        {
+            Title = "Select Working Copy Root Path",
+            FileName = "Select Folder and press Save"
+        };
+
+        var success = dialog.ShowDialog();
+
+        if (success != true)
+        {
+            return;
+        }
+
+        RootFolder = Path.GetDirectoryName(dialog.FileName) ?? string.Empty;
     }
 }

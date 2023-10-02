@@ -11,28 +11,39 @@
             <TextBlock
                 Text="Working copy root path:"
                 Margin="0,0,0,5" />
-            <TextBox x:Name="WorkingCopyRootPathTextBox"
-                 MinHeight="26"
-                 MinWidth="200"
-                 Margin="0,0,0,5"
-                 Text="{Binding RootFolder, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                 Style="{StaticResource {x:Static styles:VsResourceKeys.TextBoxStyleKey}}" />
 
+            <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                <TextBox MinHeight="26"
+                         MinWidth="200"
+                         Margin="0,0,5,5"
+                         <!--VerticalAlignment="Center"-->
+                         VerticalContentAlignment="Center"
+                         Text="{Binding RootFolder, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                         Style="{StaticResource {x:Static styles:VsResourceKeys.TextBoxStyleKey}}" />
+
+                <Button MinHeight="26"
+                        MinWidth="60"
+                        Content="Browse..."
+                        VerticalAlignment="Top"
+                        Style="{StaticResource {x:Static styles:VsResourceKeys.ButtonStyleKey}}"
+                        Command="{Binding BrowseCommand}" />
+            </StackPanel>
+            
             <CheckBox
-            Margin="0,5"
-            IsChecked="{Binding Path=OnItemAddedAddToSVN, Mode=TwoWay}">Automatically add new files to source control</CheckBox>
+                Margin="0,5"
+                IsChecked="{Binding Path=OnItemAddedAddToSVN, Mode=TwoWay}">Automatically add new files to source control</CheckBox>
 
             <CheckBox 
-            Margin="0,5"
-            IsChecked="{Binding Path=OnItemRenamedRenameInSVN, Mode=TwoWay}">Automatically move/rename files in source control</CheckBox>
+                Margin="0,5"
+                IsChecked="{Binding Path=OnItemRenamedRenameInSVN, Mode=TwoWay}">Automatically move/rename files in source control</CheckBox>
 
             <CheckBox 
-            Margin="0,5"
-            IsChecked="{Binding Path=OnItemRemovedRemoveFromSVN, Mode=TwoWay}">Automatically remove files from source control</CheckBox>
+                Margin="0,5"
+                IsChecked="{Binding Path=OnItemRemovedRemoveFromSVN, Mode=TwoWay}">Automatically remove files from source control</CheckBox>
 
             <CheckBox 
-            Margin="0,5"
-            IsChecked="{Binding Path=CloseOnEnd, Mode=TwoWay}">Automatically close dialogs if no errors</CheckBox>
+                Margin="0,5"
+                IsChecked="{Binding Path=CloseOnEnd, Mode=TwoWay}">Automatically close dialogs if no errors</CheckBox>
         </StackPanel>
     </GroupBox>
 </DataTemplate>

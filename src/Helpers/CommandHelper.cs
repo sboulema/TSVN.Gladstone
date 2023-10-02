@@ -42,9 +42,6 @@ public class CommandHelper
         var options = await OptionsHelper.GetOptions(_extensibility, cancellationToken);
         var closeOnEnd = options.CloseOnEnd ? 1 : 0;
 
-        // TODO: TEST Not yet implemented a way to handle Options
-        // https://github.com/microsoft/VSExtensibility/issues/262
-
         await StartProcess(
             _tortoiseProcPath,
             $"/command:{command} /path:\"{path}\" {args} /closeonend:{closeOnEnd}",

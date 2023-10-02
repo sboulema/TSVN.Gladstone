@@ -31,7 +31,7 @@ internal class TSVNExtension : Extension
 
         // TODO: How to subscribe to events?
 
-        // TODO: TEST Add custom options dialog
+        // TODO: Fix Options dialog Browse button
 
         // TODO: Add "Pending Changes" ToolWindow
     }

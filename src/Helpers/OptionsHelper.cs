@@ -12,7 +12,7 @@ public static class OptionsHelper
     {
         var solutionDirectory = await FileHelper.GetSolutionDirectory(extensibility, cancellationToken);
 
-        if (!File.Exists(solutionDirectory))
+        if (!Directory.Exists(solutionDirectory))
         {
             return new();
         }
@@ -34,7 +34,7 @@ public static class OptionsHelper
     {
         var solutionDirectory = await FileHelper.GetSolutionDirectory(extensibility, cancellationToken);
 
-        if (!File.Exists(solutionDirectory))
+        if (!Directory.Exists(solutionDirectory))
         {
             return;
         }

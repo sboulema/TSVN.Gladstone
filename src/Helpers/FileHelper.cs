@@ -33,9 +33,6 @@ public class FileHelper
     {
         try
         {
-            // TODO: TEST Not yet implemented a way to handle Options
-            // https://github.com/microsoft/VSExtensibility/issues/262
-
             // Override any logic with the solution specific Root Folder setting
             var options = await OptionsHelper.GetOptions(_extensibility, cancellationToken);
 
@@ -94,9 +91,6 @@ public class FileHelper
             {
                 options.RootFolder = await proc.StandardOutput.ReadLineAsync() ?? string.Empty;
             }
-
-            // TODO: TEST Not yet implemented a way to handle Options
-            // https://github.com/microsoft/VSExtensibility/issues/262
 
             await OptionsHelper.SaveOptions(options, _extensibility, cancellationToken);
 

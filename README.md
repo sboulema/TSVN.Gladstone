@@ -9,6 +9,7 @@ Control TortoiseSVN from within Visual Studio
 
 # Getting started
 1. Install [TortoiseSVN](http://www.tortoisesvn.net) with "command line client tools"
+	`winget install --id TortoiseSVN.TortoiseSVN --interactive`
 2. ~~Install the [TSVN](https://marketplace.visualstudio.com/items?itemName=SamirBoulema.TSVN) extension~~
 3. Enjoy! 
 

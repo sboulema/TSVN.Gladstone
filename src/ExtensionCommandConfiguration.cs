@@ -75,12 +75,12 @@ internal class ExtensionCommandConfiguration
     {
         Placements = new[]
         {
-            // ItemNode.OpenGroup
-            CommandPlacement.FromVsctParent(new Guid("{d309f791-903f-11d0-9efc-00a0c911004f}"), 521),
-            // ProjectNode.BuildGroup
-            CommandPlacement.FromVsctParent(new Guid("{d309f791-903f-11d0-9efc-00a0c911004f}"), 518),
-            // SolutionNode.BuildGroup
-            CommandPlacement.FromVsctParent(new Guid("{d309f791-903f-11d0-9efc-00a0c911004f}"), 537),
+            //  File in project context menu - ItemNode.OpenGroup
+            CommandPlacement.VsctParent(new Guid("{d309f791-903f-11d0-9efc-00a0c911004f}"), 521, 0),
+            // Project context menu - ProjectNode.BuildGroup
+            CommandPlacement.VsctParent(new Guid("{d309f791-903f-11d0-9efc-00a0c911004f}"), 518, 0),
+            // Solution context menu - SolutionNode.BuildGroup
+            CommandPlacement.VsctParent(new Guid("{d309f791-903f-11d0-9efc-00a0c911004f}"), 537, 0),
         },
         Children = new[]
         {
@@ -112,7 +112,7 @@ internal class ExtensionCommandConfiguration
     {
         Children = new[]
         {
-            MenuChild.Command<OptionsDialogCommand>()
+            MenuChild.Command<OptionsDialogCommand>() 
         }
     };
 

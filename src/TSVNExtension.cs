@@ -17,7 +17,8 @@ internal class TSVNExtension : Extension
             id: "TSVN.64f925a0-498e-45e3-a544-30ecbd32620d",
             version: ExtensionAssemblyVersion,
             publisherName: "Samir Boulema",
-            displayName: "TSVN"),
+            displayName: "TSVN",
+            description: "Control TortoiseSVN from within Visual Studio"),
     };
 
     /// <inheritdoc />

@@ -66,14 +66,13 @@ public class OptionsDialogData : NotifyPropertyChangedObject
         get;
     }
 
-    // TODO: While showing a dialog you can not show another dialog?
-    // TODO: Which dialog to use SaveFileDialog or FolderBrowserDialog: https://stackoverflow.com/questions/76196026/using-folder-browser-in-wpf-net-6-0
+    // TODO: How to show a OpenFolderDialog: https://github.com/microsoft/VSExtensibility/issues/291
+    // TODO: WIP - Which dialog to use SaveFileDialog or FolderBrowserDialog: https://stackoverflow.com/questions/76196026/using-folder-browser-in-wpf-net-6-0
     private async Task Browse(object? commandParameter, CancellationToken cancellationToken)
     {
-        var dialog = new SaveFileDialog()
+        var dialog = new OpenFolderDialog()
         {
-            Title = "Select Working Copy Root Path",
-            FileName = "Select Folder and press Save"
+            Title = "Select Working Copy Root Path"
         };
 
         var success = dialog.ShowDialog();
@@ -83,6 +82,6 @@ public class OptionsDialogData : NotifyPropertyChangedObject
             return;
         }
 
-        RootFolder = Path.GetDirectoryName(dialog.FileName) ?? string.Empty;
+        RootFolder = Path.GetDirectoryName(dialog.FolderName) ?? string.Empty;
     }
 }

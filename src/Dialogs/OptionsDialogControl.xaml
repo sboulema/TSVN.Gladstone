@@ -16,7 +16,6 @@
                 <TextBox MinHeight="26"
                          MinWidth="200"
                          Margin="0,0,5,5"
-                         <!--VerticalAlignment="Center"-->
                          VerticalContentAlignment="Center"
                          Text="{Binding RootFolder, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                          Style="{StaticResource {x:Static styles:VsResourceKeys.TextBoxStyleKey}}" />

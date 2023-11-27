@@ -116,9 +116,7 @@ internal class ExtensionCommandConfiguration
         }
     };
 
-    // TODO: Place command in the Editor window
-    // https://github.com/microsoft/VSExtensibility/issues/130
+    // TODO: Place command in the Editor window: https://github.com/microsoft/VSExtensibility/issues/130
 
-    // TODO: How to use string-resources.json in XAML files
-    // https://github.com/microsoft/VSExtensibility/issues/268
+    // TODO: How to use string-resources.json in XAML files: https://github.com/microsoft/VSExtensibility/issues/268
 }

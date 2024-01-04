@@ -3,6 +3,7 @@ using Microsoft.VisualStudio.Extensibility.Commands;
 using Microsoft.VisualStudio.RpcContracts.Notifications;
 using TSVN.Dialogs;
 using TSVN.Helpers;
+using TSVN.Resources;
 
 namespace TSVN.Commands;
 
@@ -36,7 +37,7 @@ internal class OptionsDialogCommand : Command
 
         var dialogResult = await Extensibility.Shell().ShowDialogAsync(
             new OptionsDialogControl(optionsDialogData),
-            "Options",
+            TSVNResources.OptionsDialogTitle,
             new(DialogButton.OKCancel, DialogResult.OK),
             cancellationToken);
 

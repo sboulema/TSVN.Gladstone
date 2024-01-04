@@ -1,15 +1,13 @@
 ﻿<DataTemplate xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-			 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-			 xmlns:vs="http://schemas.microsoft.com/visualstudio/extensibility/2022/xaml"
-			 xmlns:styles="clr-namespace:Microsoft.VisualStudio.Shell;assembly=Microsoft.VisualStudio.Shell.15.0"
-			 xmlns:colors="clr-namespace:Microsoft.VisualStudio.PlatformUI;assembly=Microsoft.VisualStudio.Shell.15.0">
+			  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+              xmlns:styles="clr-namespace:Microsoft.VisualStudio.Shell;assembly=Microsoft.VisualStudio.Shell.15.0">
     <GroupBox
-        Header="Solution-specific Options"
+        Header="{Binding OptionsGroupBoxHeader}"
         Margin="5"
         Padding="5">
         <StackPanel>
             <TextBlock
-                Text="Working copy root path:"
+                Text="{Binding WorkingCopyRootFolderLabel}"
                 Margin="0,0,0,5" />
 
             <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
@@ -22,27 +20,35 @@
 
                 <Button MinHeight="26"
                         MinWidth="60"
-                        Content="Browse..."
+                        Content="{Binding BrowseButton}"
                         VerticalAlignment="Top"
                         Style="{StaticResource {x:Static styles:VsResourceKeys.ButtonStyleKey}}"
-                        Command="{Binding BrowseCommand}" />
+                        Command="{Binding BrowseCommand}"
+                        IsEnabled="False" />
             </StackPanel>
-            
+
             <CheckBox
                 Margin="0,5"
-                IsChecked="{Binding Path=OnItemAddedAddToSVN, Mode=TwoWay}">Automatically add new files to source control</CheckBox>
+                IsChecked="{Binding Path=OnItemAddedAddToSVN, Mode=TwoWay}"
+                Content="{Binding OnItemAddedAddToSVNLabel}"
+                IsEnabled="False" />
 
             <CheckBox 
                 Margin="0,5"
-                IsChecked="{Binding Path=OnItemRenamedRenameInSVN, Mode=TwoWay}">Automatically move/rename files in source control</CheckBox>
+                IsChecked="{Binding Path=OnItemRenamedRenameInSVN, Mode=TwoWay}"
+                Content="{Binding OnItemRenamedRenameInSVNLabel}"
+                IsEnabled="False" />
 
             <CheckBox 
                 Margin="0,5"
-                IsChecked="{Binding Path=OnItemRemovedRemoveFromSVN, Mode=TwoWay}">Automatically remove files from source control</CheckBox>
+                IsChecked="{Binding Path=OnItemRemovedRemoveFromSVN, Mode=TwoWay}"
+                Content="{Binding OnItemRemovedRemoveFromSVNLabel}"
+                IsEnabled="False" />
 
             <CheckBox 
                 Margin="0,5"
-                IsChecked="{Binding Path=CloseOnEnd, Mode=TwoWay}">Automatically close dialogs if no errors</CheckBox>
+                IsChecked="{Binding Path=CloseOnEnd, Mode=TwoWay}"
+                Content="{Binding CloseOnEndLabel}" />
         </StackPanel>
     </GroupBox>
 </DataTemplate>

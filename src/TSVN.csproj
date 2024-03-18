@@ -7,14 +7,13 @@
 		<LangVersion>11</LangVersion>
 		<CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
 		<NoWarn>SA1633;SA1600;CA1303;CA1016;CA1031;CA1812;$(NoWarn)</NoWarn>
-
-		<!-- The VisualStudio.Extensibility preview packages are available from the azure-public/vside/msft_consumption feed -->
-		<RestoreAdditionalProjectSources>https://pkgs.dev.azure.com/azure-public/vside/_packaging/msft_consumption/nuget/v3/index.json;$(RestoreAdditionalProjectSources)</RestoreAdditionalProjectSources>
 	</PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Microsoft.VisualStudio.Extensibility.Sdk" Version="17.9.52-preview-1" />
-		<PackageReference Include="Microsoft.VisualStudio.Extensibility.Build" Version="17.9.52-preview-1" />
+		<PackageReference Include="Microsoft.VisualStudio.Extensibility.Sdk" Version="17.9.2092" />
+		<PackageReference Include="Microsoft.VisualStudio.Extensibility.Build" Version="17.9.2092" />
+		<PackageReference Include="Microsoft.VisualStudio.ImageCatalog" Version="17.9.37000" />
+		<PackageReference Include="Microsoft.VisualStudio.Imaging" Version="17.9.37000" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -24,7 +23,14 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <None Remove="ToolWindows\PendingChangesToolWindowControl.xaml" />
+	</ItemGroup>
+
+	<ItemGroup>
 		<EmbeddedResource Include="Dialogs\OptionsDialogControl.xaml" />
+		<EmbeddedResource Include="ToolWindows\PendingChangesToolWindowControl.xaml">
+		  <Generator>MSBuild:Compile</Generator>
+		</EmbeddedResource>
 		<Page Remove="Dialogs\OptionsDialogControl.xaml" />
 	</ItemGroup>
 

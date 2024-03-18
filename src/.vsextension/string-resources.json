@@ -58,6 +58,5 @@
   "TSVN.UpdateToolbarCommand.DisplayName": "Update",
   "TSVN.UpdateToRevisionToolbarCommand.DisplayName": "Update To Revision...",
   "TSVN.OptionsDialogCommand.DisplayName": "&Options...",
-  "TSVN.OptionsDialog.Header": "Solution-specific Options",
-  "TSVN.OptionsDialog.LabelWorkingCopyRootPath": "Working copy root path"
+  "TSVN.PendingChangesToolWindowCommand.DisplayName": "&Pending Changes..."
 }

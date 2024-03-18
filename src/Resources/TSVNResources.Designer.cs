@@ -124,6 +124,15 @@ namespace TSVN.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Pending Changes.
+        /// </summary>
+        internal static string PendingChangesToolWindowTitle {
+            get {
+                return ResourceManager.GetString("PendingChangesToolWindowTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Working copy root path.
         /// </summary>
         internal static string WorkingCopyRootFolderLabel {

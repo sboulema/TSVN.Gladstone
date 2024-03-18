@@ -1,6 +1,7 @@
 ﻿using Microsoft.VisualStudio.Extensibility.Commands;
 using Microsoft.VisualStudio.Extensibility;
 using TSVN.Commands;
+using TSVN.Commands.Windows;
 
 namespace TSVN;
 
@@ -112,6 +113,7 @@ internal class ExtensionCommandConfiguration
     {
         Children = new[]
         {
+            MenuChild.Command<PendingChangesToolWindowCommand>(),
             MenuChild.Command<OptionsDialogCommand>() 
         }
     };

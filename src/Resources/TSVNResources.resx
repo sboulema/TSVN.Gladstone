@@ -138,6 +138,9 @@
   <data name="OptionsGroupBoxHeader" xml:space="preserve">
     <value>Solution-specific Options</value>
   </data>
+  <data name="PendingChangesToolWindowTitle" xml:space="preserve">
+    <value>Pending Changes</value>
+  </data>
   <data name="WorkingCopyRootFolderLabel" xml:space="preserve">
     <value>Working copy root path</value>
   </data>

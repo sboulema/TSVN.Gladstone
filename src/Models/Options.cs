@@ -11,4 +11,6 @@ public class Options
     public bool OnItemRemovedRemoveFromSVN { get; set; }
 
     public bool CloseOnEnd { get; set; }
+
+    public bool HideUnversioned {  get; set; }
 }

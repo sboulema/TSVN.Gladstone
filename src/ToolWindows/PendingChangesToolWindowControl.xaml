@@ -1,0 +1,76 @@
+﻿<DataTemplate xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+              xmlns:styles="clr-namespace:Microsoft.VisualStudio.Shell;assembly=Microsoft.VisualStudio.Shell.15.0"
+              xmlns:catalog="clr-namespace:Microsoft.VisualStudio.Imaging;assembly=Microsoft.VisualStudio.ImageCatalog"
+              xmlns:imaging="clr-namespace:Microsoft.VisualStudio.Imaging;assembly=Microsoft.VisualStudio.Imaging">
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+        </Grid.RowDefinitions>
+
+        <StackPanel Orientation="Horizontal">
+            <Button ToolTip="Commit"
+                    Command="{Binding CommitCommand}">
+                <Button.Template>
+                    <ControlTemplate>
+                        <imaging:CrispImage Width="16" Height="16" Moniker="{x:Static catalog:KnownMonikers.Commit}" />
+                    </ControlTemplate>
+                </Button.Template>
+            </Button>
+
+            <Button Width="24"
+                    Height="24"
+                    Margin="3,0,3,0"
+                    ToolTip="Revert"
+                    Command="{Binding RevertCommand}">
+                <Button.Template>
+                    <ControlTemplate>
+                        <Border x:Name="ButtonBorder" BorderBrush="{DynamicResource {x:Static styles:VsBrushes.CommandBarBorderKey}}">
+                            <imaging:CrispImage Width="16" Height="16" Moniker="{x:Static catalog:KnownMonikers.Undo}" />
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="ButtonBorder" Property="Background" Value="{DynamicResource {x:Static styles:VsBrushes.CommandBarHoverKey}}"/>
+                                <Setter TargetName="ButtonBorder" Property="BorderThickness" Value="1"/>
+                            </Trigger>
+                            <Trigger Property="IsMouseOver" Value="False">
+                                <Setter TargetName="ButtonBorder" Property="Background" Value="transparent"/>
+                                <Setter TargetName="ButtonBorder" Property="BorderThickness" Value="0"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Button.Template>
+            </Button>
+
+            <ToggleButton Margin="5"
+                          ToolTip="Hide unversioned files and folders"
+                          Style="{StaticResource {x:Static styles:VsResourceKeys.ThemedDialogToggleButtonStyleKey}}"
+                          IsChecked="{Binding HideUnversionedFiles, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                <ToggleButton.Template>
+                    <ControlTemplate>
+                        <imaging:CrispImage Width="16" Height="16" Moniker="{x:Static catalog:KnownMonikers.ShowAllFiles}" />
+                    </ControlTemplate>
+                </ToggleButton.Template>
+            </ToggleButton>
+
+            <Button ToolTip="Refresh"
+                    Command="{Binding RefreshCommand}">
+                <Button.Template>
+                    <ControlTemplate>
+                        <imaging:CrispImage Width="16" Height="16" Moniker="{x:Static catalog:KnownMonikers.Refresh}" />
+                    </ControlTemplate>
+                </Button.Template>
+            </Button>
+        </StackPanel>
+
+        <TreeView Grid.Row="1" ItemsSource="{Binding Items}" Background="Transparent">
+            <TreeView.ItemTemplate>
+                <HierarchicalDataTemplate ItemsSource="{Binding Children}">
+                    <TextBlock Text="{Binding Path=Label}" />
+                </HierarchicalDataTemplate>
+            </TreeView.ItemTemplate>
+        </TreeView>
+    </Grid>
+</DataTemplate>

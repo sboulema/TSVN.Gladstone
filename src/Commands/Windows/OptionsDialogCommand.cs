@@ -33,7 +33,7 @@ internal class OptionsDialogCommand : Command
     {
         var options = await OptionsHelper.GetOptions(Extensibility, cancellationToken);
 
-        var optionsDialogData = new OptionsDialogData(options);
+        var optionsDialogData = new OptionsDialogData(Extensibility, options);
 
         var dialogResult = await Extensibility.Shell().ShowDialogAsync(
             new OptionsDialogControl(optionsDialogData),

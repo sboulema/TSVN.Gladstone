@@ -23,8 +23,7 @@
                         Content="{Binding BrowseButton}"
                         VerticalAlignment="Top"
                         Style="{StaticResource {x:Static styles:VsResourceKeys.ButtonStyleKey}}"
-                        Command="{Binding BrowseCommand}"
-                        IsEnabled="False" />
+                        Command="{Binding BrowseCommand}" />
             </StackPanel>
 
             <CheckBox

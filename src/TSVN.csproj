@@ -4,9 +4,7 @@
 		<TargetFrameworks>net8.0-windows8.0</TargetFrameworks>
 		<ImplicitUsings>enable</ImplicitUsings>
 		<Nullable>enable</Nullable>
-		<LangVersion>11</LangVersion>
-		<CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
-		<NoWarn>SA1633;SA1600;CA1303;CA1016;CA1031;CA1812;$(NoWarn)</NoWarn>
+		<LangVersion>12</LangVersion>
 	</PropertyGroup>
 
 	<ItemGroup>

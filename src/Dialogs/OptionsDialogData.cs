@@ -1,4 +1,5 @@
-﻿using Microsoft.VisualStudio.Extensibility.UI;
+﻿using Microsoft.VisualStudio.Extensibility;
+using Microsoft.VisualStudio.Extensibility.UI;
 using Microsoft.Win32;
 using System.Runtime.Serialization;
 using TSVN.Models;
@@ -9,14 +10,18 @@ namespace TSVN.Dialogs;
 [DataContract]
 public class OptionsDialogData : NotifyPropertyChangedObject
 {
+    private VisualStudioExtensibility _extensibility;
+
     private string _rootFolder = string.Empty;
     private bool _onItemAddedAddToSVN;
     private bool _onItemRenamedRenameInSVN;
     private bool _onItemRemovedRemoveFromSVN;
     private bool _closeOnEnd;
 
-    public OptionsDialogData(Options options)
+    public OptionsDialogData(VisualStudioExtensibility extensibility, Options options)
     {
+        _extensibility = extensibility;
+
         RootFolder = options.RootFolder;
         OnItemAddedAddToSVN = options.OnItemAddedAddToSVN;
         OnItemRenamedRenameInSVN = options.OnItemRenamedRenameInSVN;
@@ -67,23 +72,19 @@ public class OptionsDialogData : NotifyPropertyChangedObject
         get;
     }
 
-    // TODO: NOT POSSIBLE: How to show a OpenFolderDialog: https://github.com/microsoft/VSExtensibility/issues/291
-    // TODO: NOT POSSIBLE: Which dialog to use SaveFileDialog or FolderBrowserDialog: https://stackoverflow.com/questions/76196026/using-folder-browser-in-wpf-net-6-0
     private async Task Browse(object? commandParameter, CancellationToken cancellationToken)
     {
-        var dialog = new OpenFolderDialog()
+        var directoryPath = await _extensibility.Shell().ShowOpenFolderDialogAsync(new()
         {
             Title = "Select Working Copy Root Path"
-        };
+        }, cancellationToken);
 
-        var success = dialog.ShowDialog();
-
-        if (success != true)
+        if (string.IsNullOrEmpty(directoryPath))
         {
             return;
         }
 
-        RootFolder = Path.GetDirectoryName(dialog.FolderName) ?? string.Empty;
+        RootFolder = directoryPath;
     }
 
     #region Strings

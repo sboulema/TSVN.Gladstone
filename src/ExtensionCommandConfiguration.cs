@@ -10,8 +10,8 @@ internal class ExtensionCommandConfiguration
     [VisualStudioContribution]
     public static ToolbarConfiguration ToolBar => new("%TSVN.ToolBar.DisplayName%")
     {
-        Children = new[]
-        {
+        Children =
+        [
             ToolbarChild.Command<ShowChangesToolbarCommand>(),
             ToolbarChild.Command<UpdateToolbarCommand>(),
             ToolbarChild.Command<CommitToolbarCommand>(),
@@ -34,15 +34,15 @@ internal class ExtensionCommandConfiguration
             ToolbarChild.Command<CleanupToolbarCommand>(),
             ToolbarChild.Command<LockToolbarCommand>(),
             ToolbarChild.Command<UnlockToolbarCommand>(),
-        },
+        ],
     };
 
     [VisualStudioContribution]
     public static MenuConfiguration MainMenu => new("%TSVN.MainMenu.DisplayName%")
     {
-        Placements = new[] { CommandPlacement.KnownPlacements.ExtensionsMenu },
-        Children = new[]
-        {
+        Placements = [CommandPlacement.KnownPlacements.ExtensionsMenu],
+        Children =
+        [
             MenuChild.Command<ShowChangesCommand>(),
             MenuChild.Command<UpdateCommand>(),
             MenuChild.Command<CommitCommand>(),
@@ -68,23 +68,23 @@ internal class ExtensionCommandConfiguration
             MenuChild.Separator,
             MenuChild.Menu(WindowMenu),
             MenuChild.Menu(FileMenu)
-        },
+        ],
     };
 
     [VisualStudioContribution]
     public static MenuConfiguration FileMenu => new("%TSVN.FileMenu.DisplayName%")
     {
-        Placements = new[]
-        {
+        Placements =
+        [
             //  File in project context menu - ItemNode.OpenGroup
             CommandPlacement.VsctParent(new Guid("{d309f791-903f-11d0-9efc-00a0c911004f}"), 521, 0),
             // Project context menu - ProjectNode.BuildGroup
             CommandPlacement.VsctParent(new Guid("{d309f791-903f-11d0-9efc-00a0c911004f}"), 518, 0),
             // Solution context menu - SolutionNode.BuildGroup
             CommandPlacement.VsctParent(new Guid("{d309f791-903f-11d0-9efc-00a0c911004f}"), 537, 0),
-        },
-        Children = new[]
-        {
+        ],
+        Children =
+        [
             MenuChild.Command<ShowLogFileCommand>(),
             MenuChild.Command<DiskBrowserFileCommand>(),
             MenuChild.Command<RepoBrowserFileCommand>(),
@@ -105,17 +105,17 @@ internal class ExtensionCommandConfiguration
             MenuChild.Command<LockFileCommand>(),
             MenuChild.Command<UnlockFileCommand>(),
             MenuChild.Command<RenameFileCommand>(),
-        },
+        ],
     };
 
     [VisualStudioContribution]
     public static MenuConfiguration WindowMenu => new("%TSVN.WindowMenu.DisplayName%")
     {
-        Children = new[]
-        {
+        Children =
+        [
             MenuChild.Command<PendingChangesToolWindowCommand>(),
             MenuChild.Command<OptionsDialogCommand>() 
-        }
+        ]
     };
 
     // TODO: NOT POSSIBLE: Place command in the Editor window: https://github.com/microsoft/VSExtensibility/issues/130

@@ -4,19 +4,11 @@ using System.Diagnostics;
 
 namespace TSVN.Helpers;
 
-public class CommandHelper
+public class CommandHelper(
+    VisualStudioExtensibility extensibility,
+    FileHelper fileHelper)
 {
-    private readonly VisualStudioExtensibility _extensibility;
-    private readonly FileHelper _fileHelper;
-    private readonly string _tortoiseProcPath;
-
-    public CommandHelper(VisualStudioExtensibility extensibility,
-        FileHelper fileHelper)
-    {
-        _extensibility = extensibility;
-        _fileHelper = fileHelper;
-        _tortoiseProcPath = FileHelper.GetTortoiseSvnProc();
-    }
+    private readonly string _tortoiseProcPath = FileHelper.GetTortoiseSvnProc();
 
     public async Task RunTortoiseSvnCommand(IClientContext clientContext,
         string command, string args = "",
@@ -31,15 +23,22 @@ public class CommandHelper
         }
         else
         {
-            path = await _fileHelper.GetRepositoryRoot(clientContext, cancellationToken: cancellationToken);
+            path = await fileHelper.GetRepositoryRoot(clientContext, cancellationToken: cancellationToken);
         }
 
+        await RunTortoiseSvnCommand(path, command, args, cancellationToken);
+    }
+
+    public async Task RunTortoiseSvnCommand(string path,
+        string command, string args = "",
+        CancellationToken cancellationToken = default)
+    {
         if (string.IsNullOrEmpty(path))
         {
             return;
         }
 
-        var options = await OptionsHelper.GetOptions(_extensibility, cancellationToken);
+        var options = await OptionsHelper.GetOptions(extensibility, cancellationToken);
         var closeOnEnd = options.CloseOnEnd ? 1 : 0;
 
         await StartProcess(
@@ -56,7 +55,7 @@ public class CommandHelper
         }
         catch (Exception)
         {
-            await _extensibility.Shell()
+            await extensibility.Shell()
                 .ShowPromptAsync("TortoiseSVN not found. Did you install TortoiseSVN?",
                      PromptOptions.OK, cancellationToken);
         }

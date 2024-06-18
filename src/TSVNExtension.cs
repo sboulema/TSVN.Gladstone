@@ -39,6 +39,7 @@ internal class TSVNExtension : Extension
         serviceCollection.AddSingleton<CommandHelper>();
         serviceCollection.AddSingleton<FileHelper>();
         serviceCollection.AddSingleton<PendingChangesHelper>();
+        serviceCollection.AddSingleton<ProjectHelper>();
 
         // TODO: NOT POSSIBLE: How to subscribe to events: https://github.com/microsoft/VSExtensibility/issues/286
         // - VS.Events.ProjectItemsEvents.AfterAddProjectItems

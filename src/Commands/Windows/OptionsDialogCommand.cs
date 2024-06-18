@@ -8,7 +8,9 @@ using TSVN.Resources;
 namespace TSVN.Commands;
 
 [VisualStudioContribution]
-internal class OptionsDialogCommand(VisualStudioExtensibility extensibility) : Command(extensibility)
+internal class OptionsDialogCommand(
+    VisualStudioExtensibility extensibility,
+    ProjectHelper projectHelper) : Command(extensibility)
 {
     /// <inheritdoc />
     public override CommandConfiguration CommandConfiguration => new("%TSVN.OptionsDialogCommand.DisplayName%")
@@ -20,6 +22,8 @@ internal class OptionsDialogCommand(VisualStudioExtensibility extensibility) : C
     /// <inheritdoc />
     public override Task InitializeAsync(CancellationToken cancellationToken)
     {
+        projectHelper.Subscribe(cancellationToken);
+
         return base.InitializeAsync(cancellationToken);
     }
 

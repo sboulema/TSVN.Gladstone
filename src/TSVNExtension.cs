@@ -18,9 +18,15 @@ internal class TSVNExtension : Extension
             version: ExtensionAssemblyVersion,
             publisherName: "Samir Boulema",
             displayName: "TSVN",
-            description: "Control TortoiseSVN from within Visual Studio"),
-
-        // TODO: Add MoreInfoUrl, Icon, PreviewImage: https://devblogs.microsoft.com/visualstudio/visualstudio-extensibility-17-9/#post-247272-_Configure_your_extension_1
+            description: "Control TortoiseSVN from within Visual Studio")
+        {
+            MoreInfo = "https://github.com/sboulema/TSVN.Gladstone",
+            ReleaseNotes = "https://github.com/sboulema/TSVN.Gladstone/releases",
+            Tags = ["SVN", "Source control", "Tortoise", "Repository"],
+            License = "Resources/LICENSE",
+            Icon = "Resources/TortoiseSVN.png",
+            PreviewImage = "Resources/TortoiseSVN.png",
+        },
     };
 
     /// <inheritdoc />

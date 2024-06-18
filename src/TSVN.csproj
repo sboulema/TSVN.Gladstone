@@ -34,6 +34,8 @@
 
 	<ItemGroup>
 	  <None Include="..\.editorconfig" Link=".editorconfig" />
+	  <Content Include="..\art\TortoiseSVN.png" Link="Resources\TortoiseSVN.png" />
+	  <Content Include="..\LICENSE" Link="Resources\LICENSE" />
 	</ItemGroup>
 
 	<ItemGroup>

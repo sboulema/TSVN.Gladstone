@@ -23,7 +23,8 @@ internal class TSVNExtension : Extension
             MoreInfo = "https://github.com/sboulema/TSVN.Gladstone",
             ReleaseNotes = "https://github.com/sboulema/TSVN.Gladstone/releases",
             Tags = ["SVN", "Source control", "Tortoise", "Repository"],
-            License = "Resources/LICENSE",
+            // TODO: BUG? License file is missing
+            //License = "Resources/License.txt",
             Icon = "Resources/TortoiseSVN.png",
             PreviewImage = "Resources/TortoiseSVN.png",
         },

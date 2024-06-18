@@ -1,6 +1,5 @@
 ﻿using Microsoft.VisualStudio.Extensibility;
 using Microsoft.VisualStudio.Extensibility.UI;
-using Microsoft.Win32;
 using System.Runtime.Serialization;
 using TSVN.Models;
 using TSVN.Resources;
@@ -10,7 +9,7 @@ namespace TSVN.Dialogs;
 [DataContract]
 public class OptionsDialogData : NotifyPropertyChangedObject
 {
-    private VisualStudioExtensibility _extensibility;
+    private readonly VisualStudioExtensibility _extensibility;
 
     private string _rootFolder = string.Empty;
     private bool _onItemAddedAddToSVN;

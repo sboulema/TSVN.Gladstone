@@ -6,24 +6,16 @@ using TSVN.Helpers;
 namespace TSVN.Commands;
 
 [VisualStudioContribution]
-internal class ApplyPatchCommand : Command
+internal class ApplyPatchCommand(
+    VisualStudioExtensibility extensibility,
+    CommandHelper commandHelper,
+    FileHelper fileHelper) : Command(extensibility)
 {
-    private readonly CommandHelper _commandHelper;
-    private readonly FileHelper _fileHelper;
-
-    public ApplyPatchCommand(VisualStudioExtensibility extensibility,
-        CommandHelper commandHelper, FileHelper fileHelper)
-        : base(extensibility)
-    {
-        _commandHelper = commandHelper;
-        _fileHelper = fileHelper;
-    }
-
     /// <inheritdoc />
     public override CommandConfiguration CommandConfiguration => new("%TSVN.ApplyPatchCommand.DisplayName%")
     {
         Icon = new(ImageMoniker.KnownValues.Stash, IconSettings.IconAndText),
-        Shortcuts = new[] { new CommandShortcutConfiguration(ModifierKey.ControlShift, Key.S, ModifierKey.LeftAlt, Key.H) }
+        Shortcuts = [new CommandShortcutConfiguration(ModifierKey.ControlShift, Key.S, ModifierKey.LeftAlt, Key.H)]
     };
 
     /// <inheritdoc />
@@ -35,7 +27,7 @@ internal class ApplyPatchCommand : Command
     /// <inheritdoc />
     public override async Task ExecuteCommandAsync(IClientContext clientContext, CancellationToken cancellationToken)
     {
-        var solutionDir = await _fileHelper.GetRepositoryRoot(clientContext, cancellationToken: cancellationToken);
+        var solutionDir = await fileHelper.GetRepositoryRoot(clientContext, cancellationToken: cancellationToken);
 
         if (string.IsNullOrEmpty(solutionDir))
         {
@@ -56,7 +48,7 @@ internal class ApplyPatchCommand : Command
             return;
         }
 
-        await _commandHelper.StartProcess(
+        await commandHelper.StartProcess(
             "TortoiseMerge.exe",
             $"/diff:\"{openFileDialog.FileName}\" /patchpath:\"{solutionDir}\"",
             cancellationToken);

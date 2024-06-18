@@ -8,13 +8,8 @@ using TSVN.Resources;
 namespace TSVN.Commands;
 
 [VisualStudioContribution]
-internal class OptionsDialogCommand : Command
+internal class OptionsDialogCommand(VisualStudioExtensibility extensibility) : Command(extensibility)
 {
-    public OptionsDialogCommand(VisualStudioExtensibility extensibility)
-        : base(extensibility)
-    {
-    }
-
     /// <inheritdoc />
     public override CommandConfiguration CommandConfiguration => new("%TSVN.OptionsDialogCommand.DisplayName%")
     {

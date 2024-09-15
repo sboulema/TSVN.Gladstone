@@ -13,6 +13,7 @@ internal class TSVNExtension : Extension
     /// <inheritdoc/>
     public override ExtensionConfiguration ExtensionConfiguration => new()
     {
+        LoadedWhen = ActivationConstraint.SolutionState(SolutionState.FullyLoaded),
         Metadata = new(
             id: "TSVN.64f925a0-498e-45e3-a544-30ecbd32620d",
             version: ExtensionAssemblyVersion,
@@ -45,6 +46,7 @@ internal class TSVNExtension : Extension
         // - VS.Events.ProjectItemsEvents.AfterAddProjectItems
         // - VS.Events.ProjectItemsEvents.AfterRenameProjectItems
         // - VS.Events.ProjectItemsEvents.AfterRemoveProjectItems
+        // projectHelper.Subscribe(cancellationToken);
 
         // TODO: Add "Pending Changes" ToolWindow
     }

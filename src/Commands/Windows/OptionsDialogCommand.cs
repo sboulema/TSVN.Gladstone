@@ -5,7 +5,7 @@ using TSVN.Dialogs;
 using TSVN.Helpers;
 using TSVN.Resources;
 
-namespace TSVN.Commands;
+namespace TSVN.Commands.Windows;
 
 [VisualStudioContribution]
 internal class OptionsDialogCommand(
@@ -22,8 +22,6 @@ internal class OptionsDialogCommand(
     /// <inheritdoc />
     public override Task InitializeAsync(CancellationToken cancellationToken)
     {
-        projectHelper.Subscribe(cancellationToken);
-
         return base.InitializeAsync(cancellationToken);
     }
 
@@ -49,7 +47,7 @@ internal class OptionsDialogCommand(
         options.OnItemAddedAddToSVN = optionsDialogData.OnItemAddedAddToSVN;
         options.OnItemRenamedRenameInSVN = optionsDialogData.OnItemRenamedRenameInSVN;
         options.OnItemRemovedRemoveFromSVN = optionsDialogData.OnItemRemovedRemoveFromSVN;
-        options.CloseOnEnd = optionsDialogData.CloseOnEnd; 
+        options.CloseOnEnd = optionsDialogData.CloseOnEnd;
 
         await OptionsHelper.SaveOptions(options, Extensibility, cancellationToken);
     }

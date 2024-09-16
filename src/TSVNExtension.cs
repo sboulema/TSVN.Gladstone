@@ -1,6 +1,8 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Microsoft.VisualStudio.Extensibility;
+using Microsoft.VisualStudio.ProjectSystem.Query;
 using TSVN.Helpers;
+using TSVN.Observers;
 
 namespace TSVN;
 
@@ -40,14 +42,25 @@ internal class TSVNExtension : Extension
         serviceCollection.AddSingleton<CommandHelper>();
         serviceCollection.AddSingleton<FileHelper>();
         serviceCollection.AddSingleton<PendingChangesHelper>();
-        serviceCollection.AddSingleton<ProjectHelper>();
-
-        // TODO: NOT POSSIBLE: How to subscribe to events: https://github.com/microsoft/VSExtensibility/issues/286
-        // - VS.Events.ProjectItemsEvents.AfterAddProjectItems
-        // - VS.Events.ProjectItemsEvents.AfterRenameProjectItems
-        // - VS.Events.ProjectItemsEvents.AfterRemoveProjectItems
-        // projectHelper.Subscribe(cancellationToken);
 
         // TODO: Add "Pending Changes" ToolWindow
     }
+
+#pragma warning disable VSEXTPREVIEW_PROJECTQUERY_TRACKING
+    protected override async Task OnInitializedAsync(VisualStudioExtensibility extensibility, CancellationToken cancellationToken)
+    {
+        await base.OnInitializedAsync(extensibility, cancellationToken);
+
+        var commandHelper = ServiceProvider.GetRequiredService<CommandHelper>();
+        var options = await OptionsHelper.GetOptions(extensibility, cancellationToken);
+
+        var projects = await extensibility.Workspaces().QueryProjectsAsync(project => project, cancellationToken);
+        foreach (var project in projects)
+        {
+            await project.Files
+                .With(f => f.Path)
+                .TrackUpdatesAsync(new TrackerObserver(commandHelper, options), cancellationToken);
+        }
+    }
+#pragma warning restore VSEXTPREVIEW_PROJECTQUERY_TRACKING
 }

@@ -34,8 +34,7 @@
             <CheckBox 
                 Margin="0,5"
                 IsChecked="{Binding Path=OnItemRenamedRenameInSVN, Mode=TwoWay}"
-                Content="{Binding OnItemRenamedRenameInSVNLabel}"
-                IsEnabled="False" />
+                Content="{Binding OnItemRenamedRenameInSVNLabel}" />
 
             <CheckBox 
                 Margin="0,5"

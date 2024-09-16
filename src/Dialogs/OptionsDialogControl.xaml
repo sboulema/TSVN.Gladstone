@@ -29,8 +29,7 @@
             <CheckBox
                 Margin="0,5"
                 IsChecked="{Binding Path=OnItemAddedAddToSVN, Mode=TwoWay}"
-                Content="{Binding OnItemAddedAddToSVNLabel}"
-                IsEnabled="False" />
+                Content="{Binding OnItemAddedAddToSVNLabel}" />
 
             <CheckBox 
                 Margin="0,5"
@@ -41,8 +40,7 @@
             <CheckBox 
                 Margin="0,5"
                 IsChecked="{Binding Path=OnItemRemovedRemoveFromSVN, Mode=TwoWay}"
-                Content="{Binding OnItemRemovedRemoveFromSVNLabel}"
-                IsEnabled="False" />
+                Content="{Binding OnItemRemovedRemoveFromSVNLabel}" />
 
             <CheckBox 
                 Margin="0,5"

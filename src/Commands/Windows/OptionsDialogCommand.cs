@@ -28,6 +28,9 @@ internal class OptionsDialogCommand(
     /// <inheritdoc />
     public override async Task ExecuteCommandAsync(IClientContext clientContext, CancellationToken cancellationToken)
     {
+        // TODO: Added for testing purposes
+        await projectHelper.Subscribe(cancellationToken);
+
         var options = await OptionsHelper.GetOptions(Extensibility, cancellationToken);
 
         var optionsDialogData = new OptionsDialogData(Extensibility, options);

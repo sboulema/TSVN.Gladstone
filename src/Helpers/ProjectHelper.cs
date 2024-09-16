@@ -55,9 +55,25 @@ public class TrackerObserver(
         {
             await commandHelper.RunTortoiseSvnCommand(fileUpdate.Current?.Path, "rename");
         }
-        else if (options.OnItemRemovedRemoveFromSVN && fileUpdate.UpdateType == UpdateType.Removed)
+        else if (options.OnItemRemovedRemoveFromSVN &&
+            fileUpdate.UpdateType == UpdateType.Removed &&
+            fileUpdate.PreviousId != null)
         {
-            await commandHelper.RunTortoiseSvnCommand(fileUpdate.Current?.Path, "remove");
+            fileUpdate.PreviousId.TryGetValue("SourceItemName", out var sourceItemName);
+            fileUpdate.PreviousId.TryGetValue("ProjectPath", out var projectPath);
+
+            var projectDirectory = Path.GetDirectoryName(projectPath);
+
+            if (string.IsNullOrEmpty(sourceItemName) ||
+                string.IsNullOrEmpty(projectPath) ||
+                string.IsNullOrEmpty(projectDirectory))
+            {
+                return;
+            }
+
+            var fileUpdatePreviousPath = Path.Combine(projectDirectory, sourceItemName);
+
+            await commandHelper.RunTortoiseSvnCommand(fileUpdatePreviousPath, "remove");
         }
     }
 }

@@ -4,21 +4,19 @@ using System.Runtime.Serialization;
 using TSVN.Helpers;
 using TSVN.Models;
 
-namespace TSVN.ToolWindows;
+namespace TSVN.ToolWindows.PendingChanges;
 
 [DataContract]
 internal class PendingChangesToolWindowData : NotifyPropertyChangedObject
 {
     private IClientContext _clientContext;
     private PendingChangesHelper _pendingChangesHelper;
-    private List<PendingChangeTreeViewItem> _items = new(); 
+    private List<PendingChangeTreeViewItem> _items = []; 
 
     public PendingChangesToolWindowData(IClientContext clientContext, PendingChangesHelper pendingChangesHelper)
     {
         _clientContext = clientContext;
         _pendingChangesHelper = pendingChangesHelper;
-
-        RefreshCommand = new AsyncCommand(Refresh);
     }
 
     [DataMember]
@@ -28,13 +26,7 @@ internal class PendingChangesToolWindowData : NotifyPropertyChangedObject
         set => SetProperty(ref _items, value);
     }
 
-    [DataMember]
-    public IAsyncCommand RefreshCommand
-    {
-        get;
-    }
-
-    public async Task Refresh(object? commandParameter, CancellationToken cancellationToken)
+    public async Task Refresh(CancellationToken cancellationToken)
     {
         var pendingChanges = await _pendingChangesHelper.GetPendingChanges(_clientContext, cancellationToken);
         Items = pendingChanges;

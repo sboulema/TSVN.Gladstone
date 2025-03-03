@@ -58,5 +58,7 @@
   "TSVN.UpdateToolbarCommand.DisplayName": "Update",
   "TSVN.UpdateToRevisionToolbarCommand.DisplayName": "Update To Revision...",
   "TSVN.OptionsDialogCommand.DisplayName": "&Options...",
-  "TSVN.PendingChangesToolWindowCommand.DisplayName": "&Pending Changes..."
+  "TSVN.PendingChangesToolWindowCommand.DisplayName": "&Pending Changes...",
+  "TSVN.RefreshToolbarCommand.DisplayName": "Refresh",
+  "TSVN.HideFilesToolbarCommand.DisplayName": "Hide unversioned files and folders"
 }

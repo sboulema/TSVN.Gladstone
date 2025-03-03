@@ -1,6 +1,6 @@
-﻿using TSVN.ToolWindows;
-using Microsoft.VisualStudio.Extensibility;
+﻿using Microsoft.VisualStudio.Extensibility;
 using Microsoft.VisualStudio.Extensibility.Commands;
+using TSVN.ToolWindows.PendingChanges;
 
 namespace TSVN.Commands.Windows;
 

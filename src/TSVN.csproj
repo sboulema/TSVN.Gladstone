@@ -26,7 +26,7 @@
 
 	<ItemGroup>
 		<EmbeddedResource Include="Dialogs\OptionsDialogControl.xaml" />
-		<EmbeddedResource Include="ToolWindows\PendingChangesToolWindowControl.xaml">
+		<EmbeddedResource Include="ToolWindows\PendingChanges\PendingChangesToolWindowControl.xaml">
 		  <Generator>MSBuild:Compile</Generator>
 		</EmbeddedResource>
 		<Page Remove="Dialogs\OptionsDialogControl.xaml" />

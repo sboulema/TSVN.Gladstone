@@ -1,6 +1,6 @@
 ﻿using Microsoft.VisualStudio.Extensibility.UI;
 
-namespace TSVN.ToolWindows;
+namespace TSVN.ToolWindows.PendingChanges;
 
 internal class PendingChangesToolWindowControl : RemoteUserControl
 {

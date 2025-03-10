@@ -4,30 +4,17 @@ using TSVN.Models;
 
 namespace TSVN.Helpers;
 
-public class PendingChangesHelper
+public class PendingChangesHelper(
+    VisualStudioExtensibility extensibility,
+    FileHelper fileHelper)
 {
-    private readonly VisualStudioExtensibility _extensibility;
-    private readonly FileHelper _fileHelper;
-
-    public PendingChangesHelper(VisualStudioExtensibility extensibility,
-        FileHelper fileHelper)
-    {
-        _extensibility = extensibility;
-        _fileHelper = fileHelper;
-    }
-
     public async Task<List<PendingChangeTreeViewItem>> GetPendingChanges(IClientContext clientContext, CancellationToken cancellationToken = default)
     {
-        var repositoryRoot = await _fileHelper.GetRepositoryRoot(clientContext, cancellationToken);
+        var repositoryRoot = await fileHelper.GetRepositoryRoot(clientContext, cancellationToken);
 
         var pendingChanges = await GetPendingChanges(repositoryRoot, cancellationToken);
 
         var rootItem = new PendingChangeTreeViewItem
-        {
-            Label = $"Changes ({pendingChanges.Count})"
-        };
-
-        var repositoryRootItem = new PendingChangeTreeViewItem
         {
             Label = repositoryRoot
         };
@@ -41,12 +28,12 @@ public class PendingChangesHelper
 
             var pathParts = change[8..].Split('\\');
 
-            ProcessChange(repositoryRootItem, pathParts);
+            ProcessChange(rootItem, pathParts);
         }
 
-        rootItem.Children.Add(repositoryRootItem);
+        rootItem.Children.Add(rootItem);
 
-        return new() { rootItem };
+        return [rootItem];
     }
 
     private async Task<List<string>> GetPendingChanges(string repositoryRoot, CancellationToken cancellationToken = default)
@@ -55,7 +42,7 @@ public class PendingChangesHelper
 
         try
         {
-            var options = await OptionsHelper.GetOptions(_extensibility, cancellationToken);
+            var options = await OptionsHelper.GetOptions(extensibility, cancellationToken);
 
             var proc = new Process
             {
@@ -74,7 +61,7 @@ public class PendingChangesHelper
 
             while (!proc.StandardOutput.EndOfStream)
             {
-                pendingChanges.Add(await proc.StandardOutput.ReadLineAsync());
+                pendingChanges.Add(await proc.StandardOutput.ReadLineAsync(cancellationToken));
             }
         }
         catch (Exception e)
@@ -87,19 +74,23 @@ public class PendingChangesHelper
 
     private static void ProcessChange(PendingChangeTreeViewItem root, IEnumerable<string> pathParts)
     {
-        if (pathParts.Any())
+        if (!pathParts.Any())
         {
-            var label = pathParts.First();
-            var child = root.Children.Where(x => x.Label == label).SingleOrDefault();
-            if (child == null)
-            {
-                child = new PendingChangeTreeViewItem()
-                {
-                    Label = label
-                };
-                root.Children.Add(child);
-            }
-            ProcessChange(child, pathParts.Skip(1));
+            return;
         }
+
+        var label = pathParts.First();
+        var child = root.Children.Where(x => x.Label == label).SingleOrDefault();
+        
+        if (child == null)
+        {
+            child = new PendingChangeTreeViewItem()
+            {
+                Label = label
+            };
+            root.Children.Add(child);
+        }
+        
+        ProcessChange(child, pathParts.Skip(1));
     }
 }

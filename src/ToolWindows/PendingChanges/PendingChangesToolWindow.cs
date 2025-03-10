@@ -43,8 +43,8 @@ internal class PendingChangesToolWindow : ToolWindow
     /// <inheritdoc />
     public override async Task InitializeAsync(CancellationToken cancellationToken)
     {
-        _dataContext = new PendingChangesToolWindowData(null, _pendingChangesHelper);
-        await _dataContext.Refresh(cancellationToken);
+        _dataContext = new PendingChangesToolWindowData();
+        await _dataContext.Refresh(null, _pendingChangesHelper, cancellationToken);
 
         return;
     }

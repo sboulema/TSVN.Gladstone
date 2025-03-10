@@ -1,13 +1,15 @@
 ﻿using Microsoft.VisualStudio.Extensibility;
 using Microsoft.VisualStudio.Extensibility.Commands;
+using TSVN.Helpers;
 
 namespace TSVN.ToolWindows.PendingChanges.Commands;
 
 [VisualStudioContribution]
-internal class RefreshToolbarCommand(VisualStudioExtensibility extensibility)
+internal class RefreshToolbarCommand(
+    VisualStudioExtensibility extensibility,
+    PendingChangesHelper pendingChangesHelper)
     : Command(extensibility)
 {
-
     /// <inheritdoc />
     public override CommandConfiguration CommandConfiguration => new("%TSVN.RefreshToolbarCommand.DisplayName%")
     {
@@ -27,6 +29,6 @@ internal class RefreshToolbarCommand(VisualStudioExtensibility extensibility)
             return;
         }
 
-        await toolWindow.DataContext.Refresh(cancellationToken);
+        await toolWindow.DataContext.Refresh(clientContext, pendingChangesHelper, cancellationToken);
     }
 }

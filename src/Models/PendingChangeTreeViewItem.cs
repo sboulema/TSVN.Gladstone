@@ -3,10 +3,11 @@ using System.Runtime.Serialization;
 
 namespace TSVN.Models;
 
+[DataContract]
 public class PendingChangeTreeViewItem : NotifyPropertyChangedObject
 {
     private string _label = string.Empty;
-    private List<PendingChangeTreeViewItem> _items = new();
+    private List<PendingChangeTreeViewItem> _children = [];
 
     [DataMember]
     public string Label
@@ -18,7 +19,7 @@ public class PendingChangeTreeViewItem : NotifyPropertyChangedObject
     [DataMember]
     public List<PendingChangeTreeViewItem> Children
     {
-        get => _items;
-        set => SetProperty(ref _items, value);
+        get => _children;
+        set => SetProperty(ref _children, value);
     }
 }

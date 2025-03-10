@@ -9,15 +9,8 @@ namespace TSVN.ToolWindows.PendingChanges;
 [DataContract]
 internal class PendingChangesToolWindowData : NotifyPropertyChangedObject
 {
-    private IClientContext _clientContext;
-    private PendingChangesHelper _pendingChangesHelper;
-    private List<PendingChangeTreeViewItem> _items = []; 
-
-    public PendingChangesToolWindowData(IClientContext clientContext, PendingChangesHelper pendingChangesHelper)
-    {
-        _clientContext = clientContext;
-        _pendingChangesHelper = pendingChangesHelper;
-    }
+    private List<PendingChangeTreeViewItem> _items = [];
+    private string _changesHeader = "Changes";
 
     [DataMember]
     public List<PendingChangeTreeViewItem> Items
@@ -26,9 +19,26 @@ internal class PendingChangesToolWindowData : NotifyPropertyChangedObject
         set => SetProperty(ref _items, value);
     }
 
-    public async Task Refresh(CancellationToken cancellationToken)
+    [DataMember]
+    public string ChangesHeader
     {
-        var pendingChanges = await _pendingChangesHelper.GetPendingChanges(_clientContext, cancellationToken);
+        get => _changesHeader;
+        set => SetProperty(ref _changesHeader, value);
+    }
+
+    public async Task Refresh(
+        IClientContext? clientContext,
+        PendingChangesHelper pendingChangesHelper,
+        CancellationToken cancellationToken)
+    {
+        if (clientContext == null)
+        {
+            return;
+        }
+
+        var pendingChanges = await pendingChangesHelper.GetPendingChanges(clientContext, cancellationToken);
+
         Items = pendingChanges;
+        ChangesHeader = $"Changes ({pendingChanges.Count})";
     }
 }

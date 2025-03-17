@@ -1,5 +1,9 @@
 ﻿using Microsoft.VisualStudio.Extensibility;
 using System.Diagnostics;
+using System.Drawing;
+using System.Windows;
+using System.Windows.Interop;
+using System.Windows.Media.Imaging;
 using TSVN.Models;
 
 namespace TSVN.Helpers;
@@ -8,31 +12,41 @@ public class PendingChangesHelper(
     VisualStudioExtensibility extensibility,
     FileHelper fileHelper)
 {
-    public async Task<List<PendingChangeTreeViewItem>> GetPendingChanges(IClientContext clientContext, CancellationToken cancellationToken = default)
+    public async Task<PendingChangesModel> GetPendingChanges(
+        IClientContext clientContext, 
+        CancellationToken cancellationToken = default)
     {
         var repositoryRoot = await fileHelper.GetRepositoryRoot(clientContext, cancellationToken);
 
-        var pendingChanges = await GetPendingChanges(repositoryRoot, cancellationToken);
+        var result = await GetPendingChanges(repositoryRoot, cancellationToken);
 
         var rootItem = new PendingChangeTreeViewItem
         {
-            Label = repositoryRoot
+            Label = repositoryRoot,
+            Moniker = ImageMoniker.KnownValues.Repository,
         };
 
-        foreach (var change in pendingChanges)
+        var pendingChanges = ParsePendingChanges(result);
+
+        pendingChanges.ToList().ForEach(change => ProcessChange(rootItem, change, change.FilePathParts, repositoryRoot));
+
+        return new()
         {
-            if (change.Length <= 8)
-            {
-                continue;
-            }
-
-            var pathParts = change[8..].Split('\\', StringSplitOptions.RemoveEmptyEntries);
-
-            ProcessChange(rootItem, pathParts);
-        }
-
-        return [rootItem];
+            PendingChanges = [rootItem],
+            NumberOfPendingChanges = result.Count,
+        };
     }
+
+    private static IEnumerable<PendingChange> ParsePendingChanges(List<string>? pendingChanges)
+        => pendingChanges?
+        .Where(change => change.Length > 8)
+        .Select(change => new PendingChange
+        {
+            ChangeType = change.First(),
+            FilePath = change[8..],
+            FilePathParts = change[8..].Split('\\', StringSplitOptions.RemoveEmptyEntries),
+            Moniker = ImageMoniker.KnownValues.FolderClosed,
+        }) ?? [];
 
     private async Task<List<string>> GetPendingChanges(string repositoryRoot, CancellationToken cancellationToken = default)
     {
@@ -70,14 +84,18 @@ public class PendingChangesHelper(
         return pendingChanges;
     }
 
-    private static void ProcessChange(PendingChangeTreeViewItem root, IEnumerable<string> pathParts)
+    private static void ProcessChange(
+        PendingChangeTreeViewItem root,
+        PendingChange change,
+        IEnumerable<string> filePathParts,
+        string repositoryRoot)
     {
-        if (!pathParts.Any())
+        if (!filePathParts.Any())
         {
             return;
         }
 
-        var label = pathParts.First();
+        var label = filePathParts.First();
         var child = root.Children
             .Where(x => x.Label == label)
             .SingleOrDefault();
@@ -86,11 +104,38 @@ public class PendingChangesHelper(
         {
             child = new PendingChangeTreeViewItem()
             {
-                Label = label
+                Label = label,
+                //Icon = GetIcon(repositoryRoot, pathParts),
+                Moniker = change.Moniker,
             };
             root.Children.Add(child);
         }
         
-        ProcessChange(child, pathParts.Skip(1));
+        ProcessChange(child, change, filePathParts.Skip(1), repositoryRoot);
     }
+
+    private static BitmapSource? GetIcon(string repositoryRoot, IEnumerable<string> pathParts)
+    {
+        var filePath = Path.Combine(repositoryRoot, string.Join('\\', pathParts));
+
+        if (string.IsNullOrEmpty(filePath))
+        {
+            return null;
+        }
+
+        var icon = Icon.ExtractAssociatedIcon(filePath);
+
+        if (icon == null)
+        {
+            return null;
+        }
+
+        return ToImageSource(icon);
+    }
+
+    private static BitmapSource ToImageSource(Icon icon)
+        => Imaging.CreateBitmapSourceFromHIcon(
+            icon.Handle,
+            Int32Rect.Empty,
+            BitmapSizeOptions.FromEmptyOptions());
 }

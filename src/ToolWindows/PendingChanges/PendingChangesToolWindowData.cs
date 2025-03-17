@@ -36,9 +36,9 @@ internal class PendingChangesToolWindowData : NotifyPropertyChangedObject
             return;
         }
 
-        var pendingChanges = await pendingChangesHelper.GetPendingChanges(clientContext, cancellationToken);
+        var result = await pendingChangesHelper.GetPendingChanges(clientContext, cancellationToken);
 
-        Items = pendingChanges;
-        ChangesHeader = $"Changes ({pendingChanges.Count})";
+        Items = result.PendingChanges;
+        ChangesHeader = $"Changes ({result.NumberOfPendingChanges})";
     }
 }

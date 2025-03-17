@@ -26,12 +26,10 @@ public class PendingChangesHelper(
                 continue;
             }
 
-            var pathParts = change[8..].Split('\\');
+            var pathParts = change[8..].Split('\\', StringSplitOptions.RemoveEmptyEntries);
 
             ProcessChange(rootItem, pathParts);
         }
-
-        rootItem.Children.Add(rootItem);
 
         return [rootItem];
     }
@@ -80,7 +78,9 @@ public class PendingChangesHelper(
         }
 
         var label = pathParts.First();
-        var child = root.Children.Where(x => x.Label == label).SingleOrDefault();
+        var child = root.Children
+            .Where(x => x.Label == label)
+            .SingleOrDefault();
         
         if (child == null)
         {

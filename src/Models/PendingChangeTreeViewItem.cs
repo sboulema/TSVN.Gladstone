@@ -1,7 +1,6 @@
 ﻿using Microsoft.VisualStudio.Extensibility;
 using Microsoft.VisualStudio.Extensibility.UI;
 using System.Runtime.Serialization;
-using System.Windows.Media.Imaging;
 
 namespace TSVN.Models;
 
@@ -10,14 +9,21 @@ public class PendingChangeTreeViewItem : NotifyPropertyChangedObject
 {
     private string _label = string.Empty;
     private List<PendingChangeTreeViewItem> _children = [];
-    private BitmapSource? _icon;
     private ImageMoniker _moniker;
+    private char _changeType;
 
     [DataMember]
     public string Label
     {
         get => _label;
         set => SetProperty(ref _label, value);
+    }
+
+    [DataMember]
+    public char ChangeType
+    {
+        get => _changeType;
+        set => SetProperty(ref _changeType, value);
     }
 
     [DataMember]
@@ -28,16 +34,11 @@ public class PendingChangeTreeViewItem : NotifyPropertyChangedObject
     }
 
     [DataMember]
-    public BitmapSource? Icon
-    {
-        get => _icon;
-        set => SetProperty(ref _icon, value);
-    }
-
-    [DataMember]
     public ImageMoniker Moniker
     {
         get => _moniker;
         set => SetProperty(ref _moniker, value);
     }
+
+    public bool IsRoot { get; set; }
 }

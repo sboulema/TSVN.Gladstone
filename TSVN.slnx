@@ -1,0 +1,8 @@
+<Solution>
+  <Folder Name="/Solution Items/">
+    <File Path=".github/workflows/workflow.yml" />
+    <File Path="exclusion.dic" />
+    <File Path="README.md" />
+  </Folder>
+  <Project Path="src/TSVN.csproj" />
+</Solution>

@@ -1,9 +1,5 @@
 ﻿using Microsoft.VisualStudio.Extensibility;
 using System.Diagnostics;
-using System.Drawing;
-using System.Windows;
-using System.Windows.Interop;
-using System.Windows.Media.Imaging;
 using TSVN.Models;
 
 namespace TSVN.Helpers;
@@ -23,12 +19,16 @@ public class PendingChangesHelper(
         var rootItem = new PendingChangeTreeViewItem
         {
             Label = repositoryRoot,
-            Moniker = ImageMoniker.KnownValues.Repository,
+            IsRoot = true,
         };
 
         var pendingChanges = ParsePendingChanges(result);
 
-        pendingChanges.ToList().ForEach(change => ProcessChange(rootItem, change, change.FilePathParts, repositoryRoot));
+        pendingChanges
+            .ToList()
+            .ForEach(change => ProcessChange(rootItem, change, change.FilePathParts));
+
+        SetMoniker(rootItem);
 
         return new()
         {
@@ -45,7 +45,6 @@ public class PendingChangesHelper(
             ChangeType = change.First(),
             FilePath = change[8..],
             FilePathParts = change[8..].Split('\\', StringSplitOptions.RemoveEmptyEntries),
-            Moniker = ImageMoniker.KnownValues.FolderClosed,
         }) ?? [];
 
     private async Task<List<string>> GetPendingChanges(string repositoryRoot, CancellationToken cancellationToken = default)
@@ -87,8 +86,7 @@ public class PendingChangesHelper(
     private static void ProcessChange(
         PendingChangeTreeViewItem root,
         PendingChange change,
-        IEnumerable<string> filePathParts,
-        string repositoryRoot)
+        IEnumerable<string> filePathParts)
     {
         if (!filePathParts.Any())
         {
@@ -105,37 +103,28 @@ public class PendingChangesHelper(
             child = new PendingChangeTreeViewItem()
             {
                 Label = label,
-                //Icon = GetIcon(repositoryRoot, pathParts),
+                ChangeType = change.ChangeType,
                 Moniker = change.Moniker,
             };
             root.Children.Add(child);
         }
         
-        ProcessChange(child, change, filePathParts.Skip(1), repositoryRoot);
+        ProcessChange(child, change, filePathParts.Skip(1));
     }
 
-    private static BitmapSource? GetIcon(string repositoryRoot, IEnumerable<string> pathParts)
+    private static void SetMoniker(PendingChangeTreeViewItem item)
     {
-        var filePath = Path.Combine(repositoryRoot, string.Join('\\', pathParts));
-
-        if (string.IsNullOrEmpty(filePath))
+        if (item.IsRoot)
         {
-            return null;
+            item.Moniker = ImageMoniker.KnownValues.Repository;
+        }
+        else
+        {
+            item.Moniker = item.Children.Any()
+                ? ImageMoniker.KnownValues.FolderClosed
+                : ImageMoniker.KnownValues.Document;
         }
 
-        var icon = Icon.ExtractAssociatedIcon(filePath);
-
-        if (icon == null)
-        {
-            return null;
-        }
-
-        return ToImageSource(icon);
+        item.Children.ForEach(SetMoniker);
     }
-
-    private static BitmapSource ToImageSource(Icon icon)
-        => Imaging.CreateBitmapSourceFromHIcon(
-            icon.Handle,
-            Int32Rect.Empty,
-            BitmapSizeOptions.FromEmptyOptions());
 }

@@ -105,6 +105,9 @@ csharp_style_unused_value_assignment_preference = discard_variable:suggestion
 csharp_style_unused_value_expression_statement_preference = discard_variable:silent
 csharp_style_prefer_primary_constructors = true:suggestion
 
+# CA1860: Avoid using 'Enumerable.Any()' extension method
+dotnet_diagnostic.CA1860.severity = none
+
 [*]
 #### Spelling Rules ####
 spelling_languages = en-us,nl-nl

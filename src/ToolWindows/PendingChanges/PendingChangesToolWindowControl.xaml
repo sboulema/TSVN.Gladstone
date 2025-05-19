@@ -6,12 +6,18 @@
     <DataTemplate.Resources>
         <Style TargetType="TreeView" BasedOn="{StaticResource {x:Static styles:VsResourceKeys.ThemedDialogTreeViewStyleKey}}" />
         <Style TargetType="TreeViewItem" BasedOn="{StaticResource {x:Static styles:VsResourceKeys.ThemedDialogTreeViewItemStyleKey}}">
-            <Setter Property="IsExpanded" Value="True" />
-            <Style.Triggers>
-                <DataTrigger Binding="{Binding Items.Count, RelativeSource={RelativeSource Self}}" Value="1">
-                    <Setter Property="IsExpanded" Value="False" />
-                </DataTrigger>
-            </Style.Triggers>
+            <Setter Property="IsSelected" Value="{Binding IsSelected, Mode=TwoWay}"/>
+            <Setter Property="IsExpanded" Value="True"/>
+            <!--<Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="TreeViewItem">
+                        <StackPanel>
+                            <ContentPresenter ContentSource="Header" />
+                            <ItemsPresenter Name="ItemsHost" />
+                        </StackPanel>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>-->
         </Style>
     </DataTemplate.Resources>
     <Border Background="{DynamicResource {x:Static colors:EnvironmentColors.ToolWindowBackgroundBrushKey}}"
@@ -31,11 +37,16 @@
                 </TreeView.ItemsPanel>
                 <TreeView.ItemTemplate>
                     <HierarchicalDataTemplate ItemsSource="{Binding Children}">
-                        <StackPanel Orientation="Horizontal">
-                            <!--<Image Source="{Binding Icon}" Stretch="Uniform" Height="16" />-->
-                            <vs:Image Source="{Binding Moniker}" />
-                            <TextBlock Text="{Binding Path=Label}" Margin="0,0,5,0" VerticalAlignment="Center"/>
-                        </StackPanel>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+                            <vs:Image Source="{Binding Moniker}" Grid.Column="0" />
+                            <TextBlock Text="{Binding Path=Label}" Grid.Column="1" />
+                            <TextBlock Text="{Binding Path=ChangeType}" Grid.Column="2" />
+                        </Grid>
                     </HierarchicalDataTemplate>
                 </TreeView.ItemTemplate>
             </TreeView>

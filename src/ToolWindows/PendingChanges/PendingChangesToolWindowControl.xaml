@@ -8,16 +8,6 @@
         <Style TargetType="TreeViewItem" BasedOn="{StaticResource {x:Static styles:VsResourceKeys.ThemedDialogTreeViewItemStyleKey}}">
             <Setter Property="IsSelected" Value="{Binding IsSelected, Mode=TwoWay}"/>
             <Setter Property="IsExpanded" Value="True"/>
-            <!--<Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="TreeViewItem">
-                        <StackPanel>
-                            <ContentPresenter ContentSource="Header" />
-                            <ItemsPresenter Name="ItemsHost" />
-                        </StackPanel>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>-->
         </Style>
     </DataTemplate.Resources>
     <Border Background="{DynamicResource {x:Static colors:EnvironmentColors.ToolWindowBackgroundBrushKey}}"
@@ -43,9 +33,9 @@
                                 <ColumnDefinition Width="*" />
                                 <ColumnDefinition Width="Auto" />
                             </Grid.ColumnDefinitions>
-                            <vs:Image Source="{Binding Moniker}" Grid.Column="0" />
+                            <vs:Image Source="{Binding Moniker}" Grid.Column="0" Margin="0,0,5,0" />
                             <TextBlock Text="{Binding Path=Label}" Grid.Column="1" />
-                            <TextBlock Text="{Binding Path=ChangeType}" Grid.Column="2" />
+                            <TextBlock Text="{Binding Path=ChangeType}" Grid.Column="2" Margin="15,0,0,0" />
                         </Grid>
                     </HierarchicalDataTemplate>
                 </TreeView.ItemTemplate>

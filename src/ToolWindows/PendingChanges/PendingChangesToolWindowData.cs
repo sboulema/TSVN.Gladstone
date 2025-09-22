@@ -1,7 +1,5 @@
-﻿using Microsoft.VisualStudio.Extensibility;
-using Microsoft.VisualStudio.Extensibility.UI;
+﻿using Microsoft.VisualStudio.Extensibility.UI;
 using System.Runtime.Serialization;
-using TSVN.Helpers;
 using TSVN.Models;
 
 namespace TSVN.ToolWindows.PendingChanges;
@@ -24,21 +22,5 @@ internal class PendingChangesToolWindowData : NotifyPropertyChangedObject
     {
         get => _changesHeader;
         set => SetProperty(ref _changesHeader, value);
-    }
-
-    public async Task Refresh(
-        IClientContext? clientContext,
-        PendingChangesHelper pendingChangesHelper,
-        CancellationToken cancellationToken)
-    {
-        if (clientContext == null)
-        {
-            return;
-        }
-
-        var result = await pendingChangesHelper.GetPendingChanges(clientContext, cancellationToken);
-
-        Items = result.PendingChanges;
-        ChangesHeader = $"Changes ({result.NumberOfPendingChanges})";
     }
 }

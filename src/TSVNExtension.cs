@@ -43,7 +43,13 @@ internal class TSVNExtension : Extension
         serviceCollection.AddSingleton<FileHelper>();
         serviceCollection.AddSingleton<PendingChangesHelper>();
 
-        // TODO: Add "Pending Changes" ToolWindow
+        // TODO: Pending Changes tool window: Change text color for folder treeview items
+
+        // TODO: Pending Changes tool window: Add context menu
+
+        // TODO: Test automatic file change operations
+
+        // TODO: Fix refresh on toolwindow shown
     }
 
 #pragma warning disable VSEXTPREVIEW_PROJECTQUERY_TRACKING
@@ -52,14 +58,14 @@ internal class TSVNExtension : Extension
         await base.OnInitializedAsync(extensibility, cancellationToken);
 
         var commandHelper = ServiceProvider.GetRequiredService<CommandHelper>();
-        var options = await OptionsHelper.GetOptions(extensibility, cancellationToken);
 
         var projects = await extensibility.Workspaces().QueryProjectsAsync(project => project, cancellationToken);
+
         foreach (var project in projects)
         {
             await project.Files
                 .With(f => f.Path)
-                .TrackUpdatesAsync(new TrackerObserver(commandHelper, options), cancellationToken);
+                .TrackUpdatesAsync(new TrackerObserver(commandHelper, extensibility, cancellationToken), cancellationToken);
         }
     }
 #pragma warning restore VSEXTPREVIEW_PROJECTQUERY_TRACKING

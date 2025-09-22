@@ -1,6 +1,6 @@
-﻿using Microsoft.VisualStudio.ProjectSystem.Query;
+﻿using Microsoft.VisualStudio.Extensibility;
+using Microsoft.VisualStudio.ProjectSystem.Query;
 using TSVN.Helpers;
-using TSVN.Models;
 
 namespace TSVN.Observers;
 
@@ -8,7 +8,8 @@ namespace TSVN.Observers;
 
 public class TrackerObserver(
     CommandHelper commandHelper,
-    Options options) : IObserver<IQueryTrackUpdates<IFileSnapshot>>
+    VisualStudioExtensibility extensibility,
+    CancellationToken cancellationToken) : IObserver<IQueryTrackUpdates<IFileSnapshot>>
 {
     public void OnCompleted()
     {
@@ -28,6 +29,8 @@ public class TrackerObserver(
 
     private async Task ProcessFileUpdate(ItemUpdate<IFileSnapshot> fileUpdate)
     {
+        var options = await OptionsHelper.GetOptions(extensibility, cancellationToken);
+
         if (options.OnItemAddedAddToSVN &&
             fileUpdate.UpdateType == UpdateType.Added &&
             !string.IsNullOrEmpty(fileUpdate.Current?.Path))

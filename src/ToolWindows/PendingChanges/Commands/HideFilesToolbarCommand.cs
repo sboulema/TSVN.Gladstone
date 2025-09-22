@@ -25,5 +25,20 @@ internal class HideFilesToolbarCommand(VisualStudioExtensibility extensibility)
         options.HideUnversioned = !options.HideUnversioned;
 
         await OptionsHelper.SaveOptions(options, _extensibility, cancellationToken);
+
+        await RefreshToolWindow(clientContext, cancellationToken);
+    }
+
+    private static async Task RefreshToolWindow(IClientContext clientContext, CancellationToken cancellationToken)
+    {
+        if (clientContext
+            .Extensibility
+            .Shell()
+            .GetToolWindow<PendingChangesToolWindow>() is not PendingChangesToolWindow toolWindow)
+        {
+            return;
+        }
+
+        await toolWindow.Refresh(cancellationToken, clientContext);
     }
 }

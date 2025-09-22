@@ -9,7 +9,7 @@ public class PendingChangesHelper(
     FileHelper fileHelper)
 {
     public async Task<PendingChangesModel> GetPendingChanges(
-        IClientContext clientContext, 
+        IClientContext? clientContext = null, 
         CancellationToken cancellationToken = default)
     {
         var repositoryRoot = await fileHelper.GetRepositoryRoot(clientContext, cancellationToken);

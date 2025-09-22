@@ -9,18 +9,9 @@ using TSVN.ToolWindows.PendingChanges.Commands;
 namespace TSVN.ToolWindows.PendingChanges;
 
 [VisualStudioContribution]
-internal class PendingChangesToolWindow : ToolWindow
+internal class PendingChangesToolWindow(PendingChangesHelper pendingChangesHelper) : ToolWindow
 {
-    private PendingChangesToolWindowData? _dataContext;
-    private PendingChangesHelper _pendingChangesHelper;
-
-    public PendingChangesToolWindow(
-        PendingChangesHelper pendingChangesHelper)
-    {
-        _pendingChangesHelper = pendingChangesHelper;
-
-        Title = TSVNResources.PendingChangesToolWindowTitle;
-    }
+    private readonly PendingChangesToolWindowData _dataContext = new();
 
     /// <inheritdoc />
     public override ToolWindowConfiguration ToolWindowConfiguration => new()
@@ -41,22 +32,27 @@ internal class PendingChangesToolWindow : ToolWindow
     };
 
     /// <inheritdoc />
-    public override async Task InitializeAsync(CancellationToken cancellationToken)
+    public override Task InitializeAsync(CancellationToken cancellationToken)
     {
-        _dataContext = new PendingChangesToolWindowData();
-        await _dataContext.Refresh(null, _pendingChangesHelper, cancellationToken);
-
-        return;
+        Title = TSVNResources.PendingChangesToolWindowTitle;
+        
+        return Task.CompletedTask;
     }
 
     /// <inheritdoc />
     public override Task<IRemoteUserControl> GetContentAsync(CancellationToken cancellationToken)
-    {
-        return Task.FromResult<IRemoteUserControl>(new PendingChangesToolWindowControl(_dataContext));
-    }
+        => Task.FromResult<IRemoteUserControl>(new PendingChangesToolWindowControl(_dataContext));
 
-    public PendingChangesToolWindowData? DataContext
+    public override async Task OnShowAsync(CancellationToken cancellationToken)
+        => await Refresh(cancellationToken);
+
+    public async Task Refresh(
+        CancellationToken cancellationToken,
+        IClientContext? clientContext = null)
     {
-        get => _dataContext;
+        var result = await pendingChangesHelper.GetPendingChanges(clientContext, cancellationToken);
+
+        _dataContext.Items = result.PendingChanges;
+        _dataContext.ChangesHeader = $"Changes ({result.NumberOfPendingChanges})";
     }
 }

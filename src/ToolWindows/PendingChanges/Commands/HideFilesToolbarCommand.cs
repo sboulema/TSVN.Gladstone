@@ -6,7 +6,7 @@ namespace TSVN.ToolWindows.PendingChanges.Commands;
 
 [VisualStudioContribution]
 internal class HideFilesToolbarCommand(VisualStudioExtensibility extensibility)
-    : Command(extensibility)
+    : ToggleCommand(extensibility)
 {
     private readonly VisualStudioExtensibility _extensibility = extensibility;
 

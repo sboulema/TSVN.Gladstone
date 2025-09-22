@@ -40,5 +40,9 @@ public class PendingChangeTreeViewItem : NotifyPropertyChangedObject
         set => SetProperty(ref _moniker, value);
     }
 
-    public bool IsRoot { get; set; }
+    [DataMember]
+    public bool HasChildren
+        => Children.Any();
+
+    internal bool IsRoot { get; set; }
 }

@@ -43,13 +43,13 @@ internal class TSVNExtension : Extension
         serviceCollection.AddSingleton<FileHelper>();
         serviceCollection.AddSingleton<PendingChangesHelper>();
 
-        // TODO: Pending Changes tool window: Change text color for folder treeview items
-
         // TODO: Pending Changes tool window: Add context menu
 
-        // TODO: Test automatic file change operations
+        // TODO: Pending Changes tool window: TreeViewItem HorizontalAlignment="Stretch"
 
-        // TODO: Fix refresh on toolwindow shown
+        // TODO: Pending Changes tool window: toggle button border
+
+        // TODO: Test automatic file change operations
     }
 
 #pragma warning disable VSEXTPREVIEW_PROJECTQUERY_TRACKING

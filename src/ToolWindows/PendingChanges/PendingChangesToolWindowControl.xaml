@@ -27,16 +27,31 @@
                 </TreeView.ItemsPanel>
                 <TreeView.ItemTemplate>
                     <HierarchicalDataTemplate ItemsSource="{Binding Children}">
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="Auto" />
-                                <ColumnDefinition Width="*" />
-                                <ColumnDefinition Width="Auto" />
-                            </Grid.ColumnDefinitions>
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Stretch">
                             <vs:Image Source="{Binding Moniker}" Grid.Column="0" Margin="0,0,5,0" />
-                            <TextBlock Text="{Binding Path=Label}" Grid.Column="1" />
-                            <TextBlock Text="{Binding Path=ChangeType}" Grid.Column="2" Margin="15,0,0,0" />
-                        </Grid>
+                            <TextBlock x:Name="ChangeLabel" Text="{Binding Path=Label}" Grid.Column="1" HorizontalAlignment="Stretch" />
+                            <TextBlock x:Name="ChangeType" Text="{Binding Path=ChangeType}" Grid.Column="2" Margin="15,0,0,0" />
+                            <StackPanel.ContextMenu>
+                                <ContextMenu Style="{DynamicResource {x:Static styles:VsResourceKeys.ContextMenuStyleKey}}">
+                                    <MenuItem Header="Clear" Command="{Binding ClearCommand}">
+                                        <MenuItem.Icon>
+                                            <vs:Image Source="KnownMonikers.ClearWindowContent" />
+                                        </MenuItem.Icon>
+                                    </MenuItem>
+                                    <MenuItem Header="Default message" Command="{Binding DefaultTextCommand}">
+                                        <MenuItem.Icon>
+                                            <vs:Image Source="DefaultText" />
+                                        </MenuItem.Icon>
+                                    </MenuItem>
+                                </ContextMenu>
+                            </StackPanel.ContextMenu>
+                        </StackPanel>
+                        <HierarchicalDataTemplate.Triggers>
+                            <DataTrigger Binding="{Binding HasChildren}" Value="True">
+                                <Setter TargetName="ChangeLabel" Property="Foreground" Value="{DynamicResource {x:Static colors:EnvironmentColors.CommandBarTextInactiveBrushKey}}" />
+                                <Setter TargetName="ChangeType" Property="Visibility" Value="Collapsed" />
+                            </DataTrigger>
+                        </HierarchicalDataTemplate.Triggers>
                     </HierarchicalDataTemplate>
                 </TreeView.ItemTemplate>
             </TreeView>

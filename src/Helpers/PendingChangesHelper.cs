@@ -6,7 +6,8 @@ namespace TSVN.Helpers;
 
 public class PendingChangesHelper(
     VisualStudioExtensibility extensibility,
-    FileHelper fileHelper)
+    FileHelper fileHelper,
+    CommandHelper commandHelper)
 {
     public async Task<PendingChangesModel> GetPendingChanges(
         IClientContext? clientContext = null, 
@@ -16,9 +17,10 @@ public class PendingChangesHelper(
 
         var result = await GetPendingChanges(repositoryRoot, cancellationToken);
 
-        var rootItem = new PendingChangeTreeViewItem
+        var rootItem = new PendingChangeTreeViewItem(extensibility, commandHelper)
         {
             Label = repositoryRoot,
+            FilePath = repositoryRoot,
             IsRoot = true,
         };
 
@@ -26,7 +28,7 @@ public class PendingChangesHelper(
 
         pendingChanges
             .ToList()
-            .ForEach(change => ProcessChange(rootItem, change, change.FilePathParts));
+            .ForEach(change => ProcessChange(repositoryRoot, commandHelper, extensibility, rootItem, change, change.FilePathParts));
 
         SetMoniker(rootItem);
 
@@ -43,7 +45,7 @@ public class PendingChangesHelper(
         .Select(change => new PendingChange
         {
             ChangeType = change.First(),
-            FilePath = change[8..],
+            RelativeFilePath = change[8..],
             FilePathParts = change[8..].Split('\\', StringSplitOptions.RemoveEmptyEntries),
         }) ?? [];
 
@@ -84,6 +86,9 @@ public class PendingChangesHelper(
     }
 
     private static void ProcessChange(
+        string repositoryRoot,
+        CommandHelper commandHelper,
+        VisualStudioExtensibility extensibility,
         PendingChangeTreeViewItem root,
         PendingChange change,
         IEnumerable<string> filePathParts)
@@ -100,16 +105,17 @@ public class PendingChangesHelper(
         
         if (child == null)
         {
-            child = new PendingChangeTreeViewItem()
+            child = new PendingChangeTreeViewItem(extensibility, commandHelper)
             {
                 Label = label,
+                FilePath = Path.Combine(repositoryRoot, change.RelativeFilePath),
                 ChangeType = change.ChangeType,
                 Moniker = change.Moniker,
             };
             root.Children.Add(child);
         }
         
-        ProcessChange(child, change, filePathParts.Skip(1));
+        ProcessChange(repositoryRoot, commandHelper, extensibility, child, change, filePathParts.Skip(1));
     }
 
     private static void SetMoniker(PendingChangeTreeViewItem item)

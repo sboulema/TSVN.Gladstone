@@ -33,23 +33,50 @@
                             <TextBlock x:Name="ChangeType" Text="{Binding Path=ChangeType}" Grid.Column="2" Margin="15,0,0,0" />
                             <StackPanel.ContextMenu>
                                 <ContextMenu Style="{DynamicResource {x:Static styles:VsResourceKeys.ContextMenuStyleKey}}">
-                                    <MenuItem Header="Clear" Command="{Binding ClearCommand}">
+                                    <MenuItem x:Name="ContextOpen" Header="Open" Command="{Binding OpenCommand}">
                                         <MenuItem.Icon>
-                                            <vs:Image Source="KnownMonikers.ClearWindowContent" />
+                                            <vs:Image Source="KnownMonikers.Open" />
                                         </MenuItem.Icon>
                                     </MenuItem>
-                                    <MenuItem Header="Default message" Command="{Binding DefaultTextCommand}">
+                                    <MenuItem Header="Undo Changes..." Command="{Binding UndoCommand}">
                                         <MenuItem.Icon>
-                                            <vs:Image Source="DefaultText" />
+                                            <vs:Image Source="KnownMonikers.Undo" />
+                                        </MenuItem.Icon>
+                                    </MenuItem>
+                                    <Separator />
+                                    <MenuItem Header="View History..." Command="{Binding HistoryCommand}">
+                                        <MenuItem.Icon>
+                                            <vs:Image Source="KnownMonikers.History" />
+                                        </MenuItem.Icon>
+                                    </MenuItem>
+                                    <MenuItem x:Name="ContextDiff" Header="Compare with Unmodified..." Command="{Binding DiffCommand}">
+                                        <MenuItem.Icon>
+                                            <vs:Image Source="KnownMonikers.CompareFiles" />
+                                        </MenuItem.Icon>
+                                    </MenuItem>
+                                    <MenuItem x:Name="ContextBlame" Header="Blame (Annotate)..." Command="{Binding BlameCommand}">
+                                        <MenuItem.Icon>
+                                            <vs:Image Source="KnownMonikers.Comment" />
                                         </MenuItem.Icon>
                                     </MenuItem>
                                 </ContextMenu>
                             </StackPanel.ContextMenu>
+                            <vs:ExtensibilityUICommands.EventHandlers>
+                                <vs:EventHandlerCollection>
+                                    <vs:EventHandler Event="Click"
+                                        Command="{Binding DataContext.OpenDiffCommand}"
+                                        CommandParameter="{Binding}"
+                                        CounterTarget="{Binding RelativeSource={RelativeSource Self}}" />
+                                </vs:EventHandlerCollection>
+                            </vs:ExtensibilityUICommands.EventHandlers>
                         </StackPanel>
                         <HierarchicalDataTemplate.Triggers>
                             <DataTrigger Binding="{Binding HasChildren}" Value="True">
                                 <Setter TargetName="ChangeLabel" Property="Foreground" Value="{DynamicResource {x:Static colors:EnvironmentColors.CommandBarTextInactiveBrushKey}}" />
                                 <Setter TargetName="ChangeType" Property="Visibility" Value="Collapsed" />
+                                <Setter TargetName="ContextOpen" Property="IsEnabled" Value="False" />
+                                <Setter TargetName="ContextDiff" Property="IsEnabled" Value="False" />
+                                <Setter TargetName="ContextBlame" Property="IsEnabled" Value="False" />
                             </DataTrigger>
                         </HierarchicalDataTemplate.Triggers>
                     </HierarchicalDataTemplate>

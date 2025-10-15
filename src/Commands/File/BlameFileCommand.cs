@@ -19,7 +19,7 @@ internal class BlameFileCommand : Command
     public override CommandConfiguration CommandConfiguration => new("%TSVN.BlameFileCommand.DisplayName%")
     {
         Icon = new(ImageMoniker.KnownValues.Comment, IconSettings.IconAndText),
-        Shortcuts = new[] { new CommandShortcutConfiguration(ModifierKey.ControlShift, Key.S, ModifierKey.LeftAlt, Key.B) }
+        Shortcuts = [new CommandShortcutConfiguration(ModifierKey.ControlShift, Key.S, ModifierKey.LeftAlt, Key.B)]
     };
 
     /// <inheritdoc />

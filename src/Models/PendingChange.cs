@@ -6,7 +6,10 @@ public class PendingChange
 {
     public char ChangeType { get; set; }
 
-    public string FilePath { get; set; } = string.Empty;
+    /// <summary>
+    /// Relative file path of the changed file to the repository root.
+    /// </summary>
+    public string RelativeFilePath { get; set; } = string.Empty;
 
     public IEnumerable<string> FilePathParts { get; set; } = [];
 

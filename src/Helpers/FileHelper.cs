@@ -3,7 +3,6 @@ using Microsoft.VisualStudio.Extensibility.Shell;
 using Microsoft.VisualStudio.ProjectSystem.Query;
 using Microsoft.Win32;
 using System.Diagnostics;
-using System.Threading;
 
 namespace TSVN.Helpers;
 
@@ -150,10 +149,16 @@ public class FileHelper(VisualStudioExtensibility extensibility)
     }
 
     private async Task<bool> ShowMissingSolutionDirMessage(CancellationToken cancellationToken)
-        => await extensibility.Shell()
-            .ShowPromptAsync("Unable to determine the solution directory location." +
-                             "Please manually set the directory location in the settings.",
-                             PromptOptions.OK, cancellationToken);
+        => await extensibility.Shell().ShowPromptAsync(
+            "Unable to determine the solution directory location." + Environment.NewLine +
+            "Please manually set the directory location in the settings.",
+            new PromptOptions<bool>
+            {
+                DismissedReturns = false,
+                Choices = { { "OK", true } },
+                Icon = ImageMoniker.KnownValues.FolderError,
+            },
+            cancellationToken);
 
     private static string GetRegKeyValue()
     {

@@ -8,6 +8,7 @@
         <Style TargetType="TreeViewItem" BasedOn="{StaticResource {x:Static styles:VsResourceKeys.ThemedDialogTreeViewItemStyleKey}}">
             <Setter Property="IsSelected" Value="{Binding IsSelected, Mode=TwoWay}"/>
             <Setter Property="IsExpanded" Value="True"/>
+            <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
         </Style>
     </DataTemplate.Resources>
     <Border Background="{DynamicResource {x:Static colors:EnvironmentColors.ToolWindowBackgroundBrushKey}}"
@@ -27,11 +28,18 @@
                 </TreeView.ItemsPanel>
                 <TreeView.ItemTemplate>
                     <HierarchicalDataTemplate ItemsSource="{Binding Children}">
-                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Stretch">
+                        <Grid HorizontalAlignment="Stretch" Background="Transparent">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+
                             <vs:Image Source="{Binding Moniker}" Grid.Column="0" Margin="0,0,5,0" />
-                            <TextBlock x:Name="ChangeLabel" Text="{Binding Path=Label}" Grid.Column="1" HorizontalAlignment="Stretch" />
+                            <TextBlock x:Name="ChangeLabel" Text="{Binding Path=Label}" Grid.Column="1" />
                             <TextBlock x:Name="ChangeType" Text="{Binding Path=ChangeType}" Grid.Column="2" Margin="15,0,0,0" />
-                            <StackPanel.ContextMenu>
+
+                            <Grid.ContextMenu>
                                 <ContextMenu Style="{DynamicResource {x:Static styles:VsResourceKeys.ContextMenuStyleKey}}">
                                     <MenuItem x:Name="ContextOpen" Header="Open" Command="{Binding OpenCommand}">
                                         <MenuItem.Icon>
@@ -60,16 +68,15 @@
                                         </MenuItem.Icon>
                                     </MenuItem>
                                 </ContextMenu>
-                            </StackPanel.ContextMenu>
+                            </Grid.ContextMenu>
                             <vs:ExtensibilityUICommands.EventHandlers>
                                 <vs:EventHandlerCollection>
-                                    <vs:EventHandler Event="Click"
-                                        Command="{Binding DataContext.OpenDiffCommand}"
-                                        CommandParameter="{Binding}"
+                                    <vs:EventHandler Event="MouseDoubleClick"
+                                        Command="{Binding DiffCommand}"
                                         CounterTarget="{Binding RelativeSource={RelativeSource Self}}" />
                                 </vs:EventHandlerCollection>
                             </vs:ExtensibilityUICommands.EventHandlers>
-                        </StackPanel>
+                        </Grid>
                         <HierarchicalDataTemplate.Triggers>
                             <DataTrigger Binding="{Binding HasChildren}" Value="True">
                                 <Setter TargetName="ChangeLabel" Property="Foreground" Value="{DynamicResource {x:Static colors:EnvironmentColors.CommandBarTextInactiveBrushKey}}" />

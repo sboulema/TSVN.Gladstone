@@ -4,5 +4,7 @@
     <File Path="exclusion.dic" />
     <File Path="README.md" />
   </Folder>
-  <Project Path="src/TSVN.csproj" />
+  <Project Path="src/TSVN.csproj">
+    <Deploy Solution="Debug|*" />
+  </Project>
 </Solution>

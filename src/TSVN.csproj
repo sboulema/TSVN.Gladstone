@@ -8,8 +8,8 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Microsoft.VisualStudio.Extensibility.Sdk" Version="17.14.40254" />
-		<PackageReference Include="Microsoft.VisualStudio.Extensibility.Build" Version="17.14.40254" />
+		<PackageReference Include="Microsoft.VisualStudio.Extensibility.Sdk" Version="[17.14.40608]" PrivateAssets="all" />
+		<PackageReference Include="Microsoft.VisualStudio.Extensibility.Build" Version="[17.14.40608]" PrivateAssets="all"/>
 	</ItemGroup>
 
 	<ItemGroup>
@@ -19,21 +19,16 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <None Remove="ToolWindows\PendingChangesToolWindowControl.xaml" />
-	</ItemGroup>
-
-	<ItemGroup>
 		<EmbeddedResource Include="Dialogs\OptionsDialogControl.xaml" />
-		<EmbeddedResource Include="ToolWindows\PendingChanges\PendingChangesToolWindowControl.xaml">
-		  <Generator>MSBuild:Compile</Generator>
-		</EmbeddedResource>
+		<EmbeddedResource Include="ToolWindows\PendingChanges\PendingChangesToolWindowControl.xaml" />
 		<Page Remove="Dialogs\OptionsDialogControl.xaml" />
+		<Page Remove="ToolWindows\PendingChanges\PendingChangesToolWindowControl.xaml" />
 	</ItemGroup>
 
 	<ItemGroup>
 	  <None Include="..\.editorconfig" Link=".editorconfig" />
+	  <Content Include="..\LICENSE" Link="Resources\LICENSE" />
 	  <Content Include="..\art\TortoiseSVN.png" Link="Resources\TortoiseSVN.png" />
-	  <Content Include="Resources\License.txt" />
 	</ItemGroup>
 
 	<ItemGroup>

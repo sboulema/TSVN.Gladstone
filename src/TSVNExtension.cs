@@ -26,10 +26,11 @@ internal class TSVNExtension : Extension
             MoreInfo = "https://github.com/sboulema/TSVN.Gladstone",
             ReleaseNotes = "https://github.com/sboulema/TSVN.Gladstone/releases",
             Tags = ["SVN", "Source control", "Tortoise", "Repository"],
-            // TODO: BUG? License file is missing
-            //License = "Resources/License.txt",
+            License = "Resources\\LICENSE",
             Icon = "Resources/TortoiseSVN.png",
             PreviewImage = "Resources/TortoiseSVN.png",
+            InstallationTargetVersion = "[17.14,19.0)",
+            DotnetTargetVersions = [DotnetTarget.Net8, DotnetTarget.Custom("net10.0")],
         },
     };
 
@@ -63,12 +64,9 @@ internal class TSVNExtension : Extension
 
         var projects = await extensibility.Workspaces().QueryProjectsAsync(project => project, cancellationToken);
 
-        foreach (var project in projects)
-        {
-            await project.Files
-                .With(f => f.Path)
-                .TrackUpdatesAsync(new TrackerObserver(commandHelper, extensibility, cancellationToken), cancellationToken);
-        }
+        await Task.WhenAll(projects.Select(project => project.Files
+            .With(f => f.Path)
+            .TrackUpdatesAsync(new TrackerObserver(commandHelper, extensibility, cancellationToken), cancellationToken)));
     }
 #pragma warning restore VSEXTPREVIEW_PROJECTQUERY_TRACKING
 }

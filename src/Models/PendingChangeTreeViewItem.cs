@@ -12,6 +12,7 @@ public class PendingChangeTreeViewItem : NotifyPropertyChangedObject
     private List<PendingChangeTreeViewItem> _children = [];
     private ImageMoniker _moniker;
     private char _changeType;
+    private bool _isSelected;
 
     private readonly VisualStudioExtensibility _extensibility;
     private readonly CommandHelper _commandHelper;
@@ -47,7 +48,20 @@ public class PendingChangeTreeViewItem : NotifyPropertyChangedObject
     public List<PendingChangeTreeViewItem> Children
     {
         get => _children;
-        set => SetProperty(ref _children, value);
+        set
+        {
+            if (SetProperty(ref _children, value))
+            {
+                RaiseNotifyPropertyChangedEvent(nameof(HasChildren));
+                }
+            }
+    }
+
+    [DataMember]
+    public bool IsSelected
+    {
+        get => _isSelected;
+        set => SetProperty(ref _isSelected, value);
     }
 
     [DataMember]
@@ -90,7 +104,14 @@ public class PendingChangeTreeViewItem : NotifyPropertyChangedObject
         => await _commandHelper.RunTortoiseSvnCommand(FilePath, "log", cancellationToken: cancellationToken);
 
     private async Task Diff(object? commandParameter, CancellationToken cancellationToken)
-        => await _commandHelper.RunTortoiseSvnCommand(FilePath, "diff", cancellationToken: cancellationToken);
+    {
+        if (HasChildren)
+        {
+            return;
+        }
+
+        await _commandHelper.RunTortoiseSvnCommand(FilePath, "diff", cancellationToken: cancellationToken);
+    }
 
     private async Task Blame(object? commandParameter, CancellationToken cancellationToken)
         => await _commandHelper.RunTortoiseSvnCommand(FilePath, "blame", cancellationToken: cancellationToken);

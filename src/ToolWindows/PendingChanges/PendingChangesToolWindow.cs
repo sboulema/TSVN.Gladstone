@@ -21,7 +21,7 @@ internal class PendingChangesToolWindow(PendingChangesHelper pendingChangesHelpe
     };
 
     [VisualStudioContribution]
-    private static ToolbarConfiguration Toolbar => new("%ToolWindowSample.MyToolWindow.Toolbar.DisplayName%")
+    private static ToolbarConfiguration Toolbar => new("%TSVN.ToolBar.DisplayName%")
     {
         Children = [
             ToolbarChild.Command<CommitToolbarCommand>(),

@@ -18,6 +18,16 @@ internal class HideFilesToolbarCommand(VisualStudioExtensibility extensibility)
     };
 
     /// <inheritdoc />
+    public override async Task InitializeAsync(CancellationToken cancellationToken)
+    {
+        await base.InitializeAsync(cancellationToken);
+
+        var options = await OptionsHelper.GetOptions(_extensibility, cancellationToken);
+
+        IsChecked = !options.HideUnversioned;
+    }
+
+    /// <inheritdoc />
     public override async Task ExecuteCommandAsync(IClientContext clientContext, CancellationToken cancellationToken)
     {
         var options = await OptionsHelper.GetOptions(_extensibility, cancellationToken);
@@ -25,6 +35,8 @@ internal class HideFilesToolbarCommand(VisualStudioExtensibility extensibility)
         options.HideUnversioned = !options.HideUnversioned;
 
         await OptionsHelper.SaveOptions(options, _extensibility, cancellationToken);
+
+        IsChecked = !options.HideUnversioned;
 
         await RefreshToolWindow(clientContext, cancellationToken);
     }

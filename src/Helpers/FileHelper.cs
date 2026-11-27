@@ -44,41 +44,12 @@ public class FileHelper(VisualStudioExtensibility extensibility)
                 return string.Empty;
             }
 
-            var proc = new Process
+            var root = FindWorkingCopyRoot(workingDirectory);
+
+            if (!string.IsNullOrEmpty(root))
             {
-                StartInfo = new ProcessStartInfo
-                {
-                    FileName = "cmd.exe",
-                    Arguments = $"/c cd /D \"{workingDirectory}\" && \"{GetSvnExec()}\" info --show-item wc-root",
-                    UseShellExecute = false,
-                    RedirectStandardOutput = true,
-                    RedirectStandardError = true,
-                    CreateNoWindow = true
-                }
-            };
-
-            proc.Start();
-
-            var errors = string.Empty;
-
-            while (!proc.StandardError.EndOfStream)
-            {
-                errors += await proc.StandardError.ReadLineAsync();
+                return root;
             }
-
-            while (!proc.StandardOutput.EndOfStream)
-            {
-                options.RootFolder = await proc.StandardOutput.ReadLineAsync() ?? string.Empty;
-            }
-
-            await OptionsHelper.SaveOptions(options, extensibility, cancellationToken);
-
-            if (string.IsNullOrEmpty(options.RootFolder))
-            {
-                await ShowMissingSolutionDirMessage(cancellationToken);
-            }
-
-            return options.RootFolder;
         }
         catch (Exception e)
         {
@@ -118,6 +89,39 @@ public class FileHelper(VisualStudioExtensibility extensibility)
         var textView = await clientContext.GetActiveTextViewAsync(cancellationToken);
 
         return textView?.FilePath ?? string.Empty;
+    }
+
+    /// <summary>
+    /// Finds the root of the Subversion working copy that contains the given directory.
+    /// </summary>
+    /// <remarks>
+    /// Since Subversion 1.7 only the working copy root contains a <c>.svn</c> folder,
+    /// so the nearest ancestor (or the directory itself) holding one is the root.
+    /// Working copies created by Subversion 1.6 or older are not supported.
+    /// </remarks>
+    /// <param name="directory">The directory to start searching from. It does not need to be under version control itself.</param>
+    /// <returns>
+    /// The full path of the working copy root,
+    /// or <see cref="string.Empty"/> when the directory is not inside a working copy.
+    /// </returns>
+    internal static string FindWorkingCopyRoot(string directory)
+        => SelfAndParents(directory)
+            .FirstOrDefault(dir => Directory.Exists(Path.Combine(dir, ".svn")))
+            ?? string.Empty;
+
+    /// <summary>
+    /// Enumerates the given directory followed by each of its ancestors, ending at the file system root.
+    /// </summary>
+    /// <param name="path">The path of the directory to start from.</param>
+    /// <returns>
+    /// The full paths of the directory and its ancestors, nearest first.
+    /// </returns>
+    private static IEnumerable<string> SelfAndParents(string path)
+    {
+        for (var dir = new DirectoryInfo(path); dir is not null; dir = dir.Parent)
+        {
+            yield return dir.FullName;
+        }
     }
 
     /// <summary>

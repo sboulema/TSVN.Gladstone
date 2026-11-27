@@ -7,11 +7,10 @@ Control TortoiseSVN from within Visual Studio
 [![TSVN](https://github.com/sboulema/TSVN.Gladstone/actions/workflows/workflow.yml/badge.svg)](https://github.com/sboulema/TSVN.Gladstone/actions/workflows/workflow.yml)
 [![Sponsor](https://img.shields.io/badge/-Sponsor-fafbfc?logo=GitHub%20Sponsors)](https://github.com/sponsors/sboulema)
 
-# Getting started
-1. Install [TortoiseSVN](http://www.tortoisesvn.net) with "command line client tools"
-	`winget install --id TortoiseSVN.TortoiseSVN --interactive`
-2. ~~Install the [TSVN](https://marketplace.visualstudio.com/items?itemName=SamirBoulema.TSVN) extension~~
-3. Enjoy! 
+# Requirements
+1. [TortoiseSVN](http://www.tortoisesvn.net) with "command line client tools"
+	`winget install --id TortoiseSVN.TortoiseSVN --override "/passive /norestart ADDLOCAL=ALL"`
+2. [Subversion 1.7+](https://subversion.apache.org/)
 
 ## Installing
 - No public build yet

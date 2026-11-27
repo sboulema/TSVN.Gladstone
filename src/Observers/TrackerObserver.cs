@@ -23,7 +23,19 @@ public class TrackerObserver(
     {
         foreach (var fileUpdate in value.Updates)
         {
-            _ = ProcessFileUpdate(fileUpdate);
+            _ = SafeProcessFileUpdate(fileUpdate);
+        }
+    }
+
+    private async Task SafeProcessFileUpdate(ItemUpdate<IFileSnapshot> fileUpdate)
+    {
+        try
+        {
+            await ProcessFileUpdate(fileUpdate);
+        }
+        catch (Exception e)
+        {
+            LogHelper.Log(exception: e);
         }
     }
 
@@ -53,7 +65,10 @@ public class TrackerObserver(
             File.Move(fileUpdate.Current.Path, fileUpdatePreviousPath);
 
             // So that we can svn rename it properly
-            await commandHelper.StartProcess(FileHelper.GetSvnExec(), $"mv {fileUpdatePreviousPath} {fileUpdate.Current.Path}", default);
+            await commandHelper.StartProcess(
+                FileHelper.GetSvnExec(),
+                $"mv \"{fileUpdatePreviousPath}\" \"{fileUpdate.Current.Path}\"",
+                cancellationToken);
         }
         else if (options.OnItemRemovedRemoveFromSVN && fileUpdate.UpdateType == UpdateType.Removed)
         {
